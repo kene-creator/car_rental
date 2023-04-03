@@ -1,10 +1,19 @@
 import React from "react";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import SettingsIcon from "@mui/icons-material/Settings";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import styled from "styled-components";
+import { styles } from "../styles";
+import search from "../assets/icons/search-normal.png";
+import filter from "../assets/icons/filter.png";
 
 export default function Navbar() {
   return (
-    <div>
-      <div>
+    <nav
+      className={`${styles.paddingX} w-full flex flex-col lg:flex-row items-center py-5 fixed top-0 z-20 justify-center lg:justify-between`}
+    >
+      <div className="flex flex-col lg:flex-row items-center justify-center gap-2 lg:gap-12">
         <div>
           <a
             href="/"
@@ -13,12 +22,54 @@ export default function Navbar() {
             MORENT
           </a>
         </div>
-        <div></div>
+        <div className="relative w-full">
+          <input
+            type="text"
+            placeholder="Search something here"
+            className="border border-black-300 py-2 pl-12 pr-12 rounded-[2rem] focus:outline-none lg:w-[30rem] w-full"
+          />
+          <button className="absolute left-[1rem] top-[0.5rem]">
+            <img src={search} alt="search icon" />
+          </button>
+          <button className="absolute right-[1rem] top-[0.5rem]">
+            <img src={filter} alt="search icon" />
+          </button>
+        </div>
       </div>
-      <div>
-        <div></div>
-        <div></div>
+      <div className="flex justify-center align-center gap-8 smX:mt-4">
+        <div className="flex gap-4 justify-center align-center">
+          <div className="p-2 border border-black-300 rounded-full">
+            <FavoriteIcon
+              sx={{
+                color: "#596780",
+              }}
+            />
+          </div>
+          <div className="p-2 border border-black-300 rounded-full">
+            <NotificationsIcon
+              sx={{
+                color: "#596780",
+              }}
+            />
+          </div>
+          <div className="p-2 border border-black-300 rounded-full">
+            <SettingsIcon
+              sx={{
+                color: "#596780",
+              }}
+            />
+          </div>
+        </div>
+        <div>
+          <AccountCircleIcon
+            sx={{
+              color: "#596780",
+              width: "3rem",
+              height: "3rem",
+            }}
+          />
+        </div>
       </div>
-    </div>
+    </nav>
   );
 }
