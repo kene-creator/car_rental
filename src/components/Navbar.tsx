@@ -10,7 +10,7 @@ import filter from "../assets/icons/filter.png";
 export default function Navbar() {
   return (
     <nav
-      className={`${styles.paddingX} w-full flex flex-col lg:flex-row items-center py-5 z-20 justify-center lg:justify-between`}
+      className={`${styles.paddingX} w-full flex flex-col lg:flex-row items-center py-5 z-20 justify-center lg:justify-between bg-white`}
     >
       <div className="flex flex-col lg:flex-row items-center justify-center gap-2 lg:gap-12">
         <div>
