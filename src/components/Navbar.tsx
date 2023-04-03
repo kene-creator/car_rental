@@ -36,7 +36,7 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-      <div className="flex justify-center align-center gap-8 smX:mt-4">
+      <div className="flex justify-center align-center gap-8 mt-4 lg:mt-0">
         <div className="flex gap-4 justify-center align-center">
           <div className="p-2 border border-black-300 rounded-full">
             <FavoriteIcon
