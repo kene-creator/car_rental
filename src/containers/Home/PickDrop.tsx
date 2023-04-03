@@ -21,7 +21,7 @@ const PickDrop = () => {
         <Calendar
           onChange={handleDateChange as any}
           value={date}
-          className="absolute lg:bottom-[-17rem] bottom-[10rem] left-0 z-20"
+          className="absolute md:bottom-[-17rem] bottom-[10rem] left-0 z-20"
         />
       )}
       <div className="bg-white rounded-md w-full lg:w-[45%] py-6 px-6 z-0">
@@ -75,7 +75,7 @@ const PickDrop = () => {
       <div className="bg-white rounded-md w-full lg:w-[45%] py-6 px-6 mt-[-2.5rem] md:mt-0">
         <div className="flex gap-4">
           <input type="radio" checked />
-          <h4>Pick-Up</h4>
+          <h4>Drop-Off</h4>
         </div>
         <div className="flex flex-col lg:flex-row justify-between mt-4">
           <div className="lg:border-r lg:border-slate-500 lg:pr-6">
