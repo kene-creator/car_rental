@@ -4,6 +4,7 @@ import bg1 from "../../assets/backgrounds/Ads1.png";
 import bg2 from "../../assets/backgrounds/20899.jpg";
 import car_1 from "../../assets/images/car_1.png";
 import car_2 from "../../assets/images/car_2.png";
+import Button from "../../components/Button";
 
 const TopSection = () => {
   return (
@@ -20,12 +21,7 @@ const TopSection = () => {
             Ease of doing a car rental safely and reliably. Of course at a low
             price.
           </p>
-          <button
-            type="button"
-            className="bg-[#3563E9] py-2 px-1 text-white lg:w-[45%] font-semibold"
-          >
-            Rental Car
-          </button>
+          <Button>Rental Car</Button>
         </div>
         <div className="mt-6 flex justify-center items-center">
           <img src={car_1} alt="car" />
@@ -45,7 +41,7 @@ const TopSection = () => {
           </p>
           <button
             type="button"
-            className="bg-[#54A6FF] py-2 px-1 text-white lg:w-[45%] font-semibold"
+            className="bg-[#54A6FF] py-2 px-1 text-white lg:w-[60%] font-semibold"
           >
             Rental Car
           </button>
