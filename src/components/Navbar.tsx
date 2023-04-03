@@ -3,7 +3,6 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import SettingsIcon from "@mui/icons-material/Settings";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import styled from "styled-components";
 import { styles } from "../styles";
 import search from "../assets/icons/search-normal.png";
 import filter from "../assets/icons/filter.png";
@@ -11,7 +10,7 @@ import filter from "../assets/icons/filter.png";
 export default function Navbar() {
   return (
     <nav
-      className={`${styles.paddingX} w-full flex flex-col lg:flex-row items-center py-5 fixed top-0 z-20 justify-center lg:justify-between`}
+      className={`${styles.paddingX} w-full flex flex-col lg:flex-row items-center py-5 z-20 justify-center lg:justify-between`}
     >
       <div className="flex flex-col lg:flex-row items-center justify-center gap-2 lg:gap-12">
         <div>

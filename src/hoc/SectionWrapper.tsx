@@ -6,7 +6,7 @@ export default function SectionWrapper(
   idName: string
 ) {
   const WrappedComponent = () => (
-    <div className={`${styles.padding} max-w-7xl mx-auto relative z-0`}>
+    <div className={`${styles.padding} max-w-7xl mx-auto  z-0`}>
       <span id={idName}>&nbsp;</span>
       <Component />
     </div>
