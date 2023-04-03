@@ -32,7 +32,7 @@ const PickDrop = () => {
           </div>
           <div className="mt-4 lg:mt-0 lg:pl-6">
             <p className="font-semibold">Time</p>
-            <div className="flex justify-between mt-4 items-center">
+            <div className="flex justify-between mt-4">
               <p className="text-slate-500 mr-6 text-sm lg:text-base ">
                 Select your time
               </p>
@@ -42,10 +42,10 @@ const PickDrop = () => {
         </div>
       </div>
 
-      <div className="bg-[#3563E9] rounded-md p-2">
+      <div className="bg-[#3563E9] rounded-md lg:p-2 p-4 mt-[-2.5rem] lg:mt-0 z-10 shadow-blue-500 shadow-lg md:shadow-none">
         <SwapVertIcon sx={{ color: "white" }} />
       </div>
-      <div className="bg-white rounded-md w-full lg:w-[45%] py-6 px-6">
+      <div className="bg-white rounded-md w-full lg:w-[45%] py-6 px-6 mt-[-2.5rem] md:mt-0">
         <div className="flex gap-4">
           <input type="radio" checked />
           <h4>Pick-Up</h4>
@@ -71,7 +71,7 @@ const PickDrop = () => {
           </div>
           <div className="mt-4 lg:mt-0 lg:pl-6">
             <p className="font-semibold">Time</p>
-            <div className="flex justify-between mt-4 items-center">
+            <div className="flex justify-between mt-4">
               <p className="text-slate-500 mr-6 text-sm lg:text-base ">
                 Select your time
               </p>
