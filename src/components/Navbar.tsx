@@ -22,16 +22,16 @@ export default function Navbar() {
             MORENT
           </a>
         </div>
-        <div className="relative w-full">
+        <div className="relative w-full flex lg:block">
           <input
             type="text"
             placeholder="Search something here"
-            className="border border-black-300 py-2 pl-12 pr-12 rounded-[2rem] focus:outline-none lg:w-[30rem] w-full"
+            className="border border-black-300 py-2 pl-12 pr-12 rounded-md lg:rounded-[2rem] focus:outline-none lg:w-[30rem] w-full"
           />
           <button className="absolute left-[1rem] top-[0.5rem]">
             <img src={search} alt="search icon" />
           </button>
-          <button className="absolute right-[1rem] top-[0.5rem]">
+          <button className="lg:absolute lg:right-[1rem] lg:top-[0.5rem] lg:border-0 lg:p-0 lg:ml-0 border border-black-300 p-1 ml-2">
             <img src={filter} alt="search icon" />
           </button>
         </div>
