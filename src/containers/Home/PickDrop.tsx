@@ -1,12 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import SectionWrapper from "../../hoc/SectionWrapper";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 
 const PickDrop = () => {
+  const [date, setDate] = useState<Date>(new Date());
+  const [openCalendar, setOpenCalendar] = useState<Boolean>(false);
+  const [selectedDate, setSelectedDate] = useState<Date>();
+
+  const handleDateChange = (date: Date) => {
+    setDate(date);
+    setSelectedDate(date);
+  };
+
   return (
-    <div className="flex flex-col md:flex-row justify-center items-center w-full main_font gap-6 lg:mt-[-8rem] mt-[-4rem]">
-      <div className="bg-white rounded-md w-full lg:w-[45%] py-6 px-6">
+    <div className="relative flex flex-col md:flex-row justify-center items-center w-full main_font gap-6 lg:mt-[-8rem] mt-[-4rem] z-0">
+      {openCalendar && (
+        <Calendar
+          onChange={handleDateChange as any}
+          value={date}
+          className="absolute lg:bottom-[-17rem] bottom-[10rem] left-0 z-20"
+        />
+      )}
+      <div className="bg-white rounded-md w-full lg:w-[45%] py-6 px-6 z-0">
         <div className="flex gap-4">
           <input type="radio" checked />
           <h4>Pick-Up</h4>
@@ -23,9 +41,18 @@ const PickDrop = () => {
           </div>
           <div className="lg:border-r lg:border-slate-500 lg:px-6 mt-4 lg:mt-0">
             <p className="font-semibold">Date</p>
-            <div className="flex justify-between mt-4">
+            <div
+              className="flex justify-between mt-4 cursor-pointer"
+              onClick={() => setOpenCalendar(!openCalendar)}
+            >
               <p className="text-slate-500 mr-6 text-sm lg:text-base">
-                Select your date
+                {selectedDate
+                  ? selectedDate.toLocaleDateString(navigator.language, {
+                      weekday: "long",
+                      month: "long",
+                      day: "numeric",
+                    })
+                  : "Select your date"}
               </p>
               <KeyboardArrowDownIcon />
             </div>
