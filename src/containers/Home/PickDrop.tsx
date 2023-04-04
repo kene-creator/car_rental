@@ -164,7 +164,15 @@ const PickDrop = () => {
                     })
                   : "Select your date"}
               </p>
-              <KeyboardArrowDownIcon />
+              <div
+                className={
+                  openPickupCalendar
+                    ? "rotate-180 transition-all"
+                    : "transition-all"
+                }
+              >
+                <KeyboardArrowDownIcon />
+              </div>
             </div>
           </div>
           <div className="mt-4 lg:mt-0 lg:pl-6">
@@ -192,7 +200,15 @@ const PickDrop = () => {
                     })
                   : "Select pickup time"}
               </p>
-              <KeyboardArrowDownIcon />
+              <div
+                className={
+                  openPickupClock
+                    ? "rotate-180 transition-all"
+                    : "transition-all"
+                }
+              >
+                <KeyboardArrowDownIcon />
+              </div>
             </div>
           </div>
         </div>
@@ -233,7 +249,15 @@ const PickDrop = () => {
                     })
                   : "Select your date"}
               </p>
-              <KeyboardArrowDownIcon />
+              <div
+                className={
+                  openDropoffCalendar
+                    ? "rotate-180 transition-all"
+                    : "transition-all"
+                }
+              >
+                <KeyboardArrowDownIcon />
+              </div>
             </div>
           </div>
           <div className="mt-4 lg:mt-0 lg:pl-6">
@@ -257,7 +281,15 @@ const PickDrop = () => {
                     })
                   : "Select drop-off time"}
               </p>
-              <KeyboardArrowDownIcon />
+              <div
+                className={
+                  openDropoffClock
+                    ? "rotate-180 transition-all"
+                    : "transition-all"
+                }
+              >
+                <KeyboardArrowDownIcon />
+              </div>
             </div>
           </div>
         </div>

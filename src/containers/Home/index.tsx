@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "../../components/Navbar";
 import TopSection from "./TopSection";
 import PickDrop from "./PickDrop";
+import TopCars from "./TopCars";
 
 export default function Homepage() {
   return (
@@ -12,6 +13,7 @@ export default function Homepage() {
       <div className="bg-[#F6F7F9]">
         <TopSection />
         <PickDrop />
+        <TopCars />
       </div>
     </div>
   );
