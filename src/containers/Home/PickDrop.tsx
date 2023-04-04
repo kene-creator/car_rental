@@ -8,6 +8,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import CountrySelect from "../../components/CountryList";
 
 const PickDrop = () => {
   const [pickupDate, setPickupDate] = React.useState<Dayjs | null>(
@@ -34,6 +35,8 @@ const PickDrop = () => {
   const [openDropoffClock, setOpenDropoffClock] = useState<Boolean>(false);
   const [selectedDropoffTime, setSelectedDropoffTime] = useState<Date>();
 
+  const [selectedCountry, setSelectedCountry] = useState("");
+
   const handlePickupDateChange = (date: any) => {
     setPickupDate(date);
     setSelectedPickupDate(date["$d"]);
@@ -52,29 +55,41 @@ const PickDrop = () => {
     setSelectedDropoffTime(time["$d"]);
   };
 
+  const handleCountryChange = (country: string): void => {
+    setSelectedCountry(country);
+  };
+  console.log(selectedCountry);
+
   return (
-    <div className="relative flex flex-col md:flex-row justify-center items-center w-full main_font gap-6 lg:mt-[-8rem] mt-[-4rem] z-0">
+    <div className="relative flex flex-col justify-center items-center w-full main_font gap-6 lg:mt-[-8rem] mt-[-4rem] z-0">
       {openPickupCalendar && (
-        <div className="absolute md:top-[10rem] top-[13rem] right-0 md:left-0 z-20 w-full md:w-[30%] bg-white transition-all">
+        <div className="absolute lg:top-[10rem] md:top-[14.5rem] top-[16rem] right-0 lg:left-[30rem] md:right-[2rem] z-20 w-full md:w-[30%]  transition-all">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={["DatePicker", "DatePicker"]}>
               <DatePicker
                 label="Enter Pick-up Date"
                 value={pickupDate}
                 onChange={(newValue) => handlePickupDateChange(newValue)}
+                sx={{
+                  backgroundColor: "white",
+                }}
               />
             </DemoContainer>
           </LocalizationProvider>
         </div>
       )}
       {openPickupClock && (
-        <div className="absolute md:top-[10rem] top-[10rem] right-0 md:left-0 lg:left-[15rem] z-20 w-full md:w-[40%] lg:w-[20%] bg-white transition-all">
+        <div className="absolute lg:top-[8.5rem] md:top-[20rem] top-[12rem] right-0 lg:right-[2rem] md:right-[2rem] z-20 w-full md:w-[30%]  transition-all">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={["TimePicker", "TimePicker"]}>
               <TimePicker
                 label="Enter Pickup Time"
                 value={pickupTime}
                 onChange={(newValue) => handlePickupTimeChage(newValue)}
+                sx={{
+                  backgroundColor: "white",
+                }}
+                onAccept={() => setOpenPickupClock(false)}
               />
             </DemoContainer>
           </LocalizationProvider>
@@ -82,45 +97,46 @@ const PickDrop = () => {
       )}
 
       {openDropoffCalendar && (
-        <div className="absolute md:top-[10rem] top-[35rem] right-0 md:right-0 z-20 w-full md:w-[30%] bg-white transition-all">
+        <div className="absolute lg:top-[27rem] md:top-[40rem] top-[41rem]  lg:left-[22rem] md:right-0 right-0 z-20 w-full md:w-[30%] transition-all">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={["DatePicker", "DatePicker"]}>
               <DatePicker
                 label="Enter Drop-off Date"
                 value={dropoffDate}
                 onChange={(newValue) => handleDropoffDateChange(newValue)}
+                sx={{
+                  backgroundColor: "white",
+                }}
               />
             </DemoContainer>
           </LocalizationProvider>
         </div>
       )}
       {openDropoffClock && (
-        <div className="absolute md:bottom-[-3rem] bottom-[-3rem] right-0 md:right-0 lg:right-0 z-20 w-full md:w-[40%] lg:w-[20%] bg-white transition-all">
+        <div className="absolute lg:top-[27rem] md:top-[46.5rem] top-[46rem]  lg:right-[5.5rem] md:right-0 right-0 z-20 w-full md:w-[30%] transition-all">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={["TimePicker", "TimePicker"]}>
               <TimePicker
                 label="Enter Drop-off Time"
                 value={dropoffTime}
                 onChange={(newValue) => handleDropoffTimeChage(newValue)}
+                sx={{
+                  backgroundColor: "white",
+                }}
               />
             </DemoContainer>
           </LocalizationProvider>
         </div>
       )}
-      <div className="bg-white rounded-md w-full lg:w-[45%] py-6 px-6 z-0">
+      <div className="bg-white rounded-md w-full lg:w-[80%] py-6 px-6 z-0">
         <div className="flex gap-4">
           <input type="radio" checked />
           <h4>Pick-Up</h4>
         </div>
-        <div className="flex flex-col lg:flex-row justify-between mt-4">
+        <div className="flex flex-col lg:flex-row justify-between lg:justify-center mt-4">
           <div className="lg:border-r lg:border-slate-500 lg:pr-6">
             <p className="font-semibold">Location</p>
-            <div className="flex justify-between mt-4">
-              <p className="text-slate-500 mr-6 text-sm lg:text-base ">
-                Select your city
-              </p>
-              <KeyboardArrowDownIcon />
-            </div>
+            <CountrySelect onCountryChange={handleCountryChange} />
           </div>
           <div className="lg:border-r lg:border-slate-500 lg:px-6 mt-4 lg:mt-0">
             <p className="font-semibold">Date</p>
@@ -163,20 +179,15 @@ const PickDrop = () => {
       <div className="bg-[#3563E9] rounded-md lg:p-2 p-4 mt-[-2.5rem] lg:mt-0 z-10 shadow-blue-500 shadow-lg md:shadow-none">
         <SwapVertIcon sx={{ color: "white" }} />
       </div>
-      <div className="bg-white rounded-md w-full lg:w-[45%] py-6 px-6 mt-[-2.5rem] md:mt-0">
+      <div className="bg-white rounded-md w-full lg:w-[80%] py-6 px-6 z-0">
         <div className="flex gap-4">
           <input type="radio" checked />
           <h4>Drop-Off</h4>
         </div>
-        <div className="flex flex-col lg:flex-row justify-between mt-4">
+        <div className="flex flex-col lg:flex-row justify-between lg:justify-center mt-4">
           <div className="lg:border-r lg:border-slate-500 lg:pr-6">
             <p className="font-semibold">Location</p>
-            <div className="flex justify-between mt-4">
-              <p className="text-slate-500 mr-6 text-sm lg:text-base ">
-                Select your city
-              </p>
-              <KeyboardArrowDownIcon />
-            </div>
+            <CountrySelect onCountryChange={handleCountryChange} />
           </div>
           <div className="lg:border-r lg:border-slate-500 lg:px-6 mt-4 lg:mt-0">
             <p className="font-semibold">Date</p>
