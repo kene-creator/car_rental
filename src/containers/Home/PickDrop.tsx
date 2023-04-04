@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import SectionWrapper from "../../hoc/SectionWrapper";
-import "react-calendar/dist/Calendar.css";
 import dayjs, { Dayjs } from "dayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
