@@ -6,22 +6,37 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
 const PickDrop = () => {
-  const [date, setDate] = useState<Date>(new Date());
-  const [openCalendar, setOpenCalendar] = useState<Boolean>(false);
-  const [selectedDate, setSelectedDate] = useState<Date>();
+  const [pickupDate, setPickupDate] = useState<Date>(new Date());
+  const [dropoffDate, setDropoffDate] = useState<Date>(new Date());
+  const [openPickupCalendar, setOpenPickupCalendar] = useState<Boolean>(false);
+  const [openDropoffCalendar, setOpenDropoffCalendar] =
+    useState<Boolean>(false);
+  const [selectedPickupDate, setSelectedPickupDate] = useState<Date>();
+  const [selectedDropoffDate, setSelectedDropoffDate] = useState<Date>();
 
-  const handleDateChange = (date: Date) => {
-    setDate(date);
-    setSelectedDate(date);
+  const handlePickupDateChange = (date: Date) => {
+    setPickupDate(date);
+    setSelectedPickupDate(date);
+  };
+  const handleDropoffDateChange = (date: Date) => {
+    setDropoffDate(date);
+    setSelectedDropoffDate(date);
   };
 
   return (
     <div className="relative flex flex-col md:flex-row justify-center items-center w-full main_font gap-6 lg:mt-[-8rem] mt-[-4rem] z-0">
-      {openCalendar && (
+      {openPickupCalendar && (
         <Calendar
-          onChange={handleDateChange as any}
-          value={date}
+          onChange={handlePickupDateChange as any}
+          value={pickupDate}
           className="absolute md:bottom-[-17rem] bottom-[10rem] left-0 z-20"
+        />
+      )}
+      {openDropoffCalendar && (
+        <Calendar
+          onChange={handleDropoffDateChange as any}
+          value={dropoffDate}
+          className="absolute md:bottom-[-17rem] bottom-[-11rem] right-0 z-20"
         />
       )}
       <div className="bg-white rounded-md w-full lg:w-[45%] py-6 px-6 z-0">
@@ -43,11 +58,11 @@ const PickDrop = () => {
             <p className="font-semibold">Date</p>
             <div
               className="flex justify-between mt-4 cursor-pointer"
-              onClick={() => setOpenCalendar(!openCalendar)}
+              onClick={() => setOpenPickupCalendar(!openPickupCalendar)}
             >
               <p className="text-slate-500 mr-6 text-sm lg:text-base">
-                {selectedDate
-                  ? selectedDate.toLocaleDateString(navigator.language, {
+                {selectedPickupDate
+                  ? selectedPickupDate.toLocaleDateString(navigator.language, {
                       weekday: "long",
                       month: "long",
                       day: "numeric",
@@ -89,9 +104,18 @@ const PickDrop = () => {
           </div>
           <div className="lg:border-r lg:border-slate-500 lg:px-6 mt-4 lg:mt-0">
             <p className="font-semibold">Date</p>
-            <div className="flex justify-between mt-4">
+            <div
+              className="flex justify-between mt-4"
+              onClick={() => setOpenDropoffCalendar(!openDropoffCalendar)}
+            >
               <p className="text-slate-500 mr-6 text-sm lg:text-base">
-                Select your date
+                {selectedDropoffDate
+                  ? selectedDropoffDate.toLocaleDateString(navigator.language, {
+                      weekday: "long",
+                      month: "long",
+                      day: "numeric",
+                    })
+                  : "Select your date"}
               </p>
               <KeyboardArrowDownIcon />
             </div>
