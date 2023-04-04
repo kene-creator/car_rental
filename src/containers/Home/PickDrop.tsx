@@ -4,6 +4,7 @@ import SwapVertIcon from "@mui/icons-material/SwapVert";
 import SectionWrapper from "../../hoc/SectionWrapper";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import TimePicker from "react-time-picker";
 
 const PickDrop = () => {
   const [pickupDate, setPickupDate] = useState<Date>(new Date());
@@ -14,6 +15,9 @@ const PickDrop = () => {
   const [selectedPickupDate, setSelectedPickupDate] = useState<Date>();
   const [selectedDropoffDate, setSelectedDropoffDate] = useState<Date>();
 
+  const [pickupTime, setPickupTime] = useState<Date>("0:00");
+  const [openPickupClock, setOpenPickupClock] = useState<Boolean>(false);
+
   const handlePickupDateChange = (date: Date) => {
     setPickupDate(date);
     setSelectedPickupDate(date);
@@ -21,6 +25,10 @@ const PickDrop = () => {
   const handleDropoffDateChange = (date: Date) => {
     setDropoffDate(date);
     setSelectedDropoffDate(date);
+  };
+
+  const handlePickupTimeChage = (time: Date) => {
+    setPickupTime(time);
   };
 
   return (
@@ -32,6 +40,14 @@ const PickDrop = () => {
           className="absolute md:bottom-[-17rem] bottom-[10rem] left-0 z-20"
         />
       )}
+      {openPickupClock && (
+        <TimePicker
+          onChange={handlePickupTimeChage as any}
+          value={pickupTime}
+          className="absolute md:bottom-[-17rem] bottom-[10rem] left-0 z-20"
+        />
+      )}
+
       {openDropoffCalendar && (
         <Calendar
           onChange={handleDropoffDateChange as any}
@@ -74,7 +90,10 @@ const PickDrop = () => {
           </div>
           <div className="mt-4 lg:mt-0 lg:pl-6">
             <p className="font-semibold">Time</p>
-            <div className="flex justify-between mt-4">
+            <div
+              className="flex justify-between mt-4"
+              onClick={() => setOpenPickupClock(!openPickupClock)}
+            >
               <p className="text-slate-500 mr-6 text-sm lg:text-base ">
                 Select your time
               </p>
