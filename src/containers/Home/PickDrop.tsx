@@ -142,7 +142,18 @@ const PickDrop = () => {
             <p className="font-semibold">Date</p>
             <div
               className="flex justify-between mt-4 cursor-pointer"
-              onClick={() => setOpenPickupCalendar(!openPickupCalendar)}
+              onClick={() => {
+                if (
+                  openDropoffCalendar ||
+                  openDropoffClock ||
+                  openPickupClock
+                ) {
+                  setOpenDropoffCalendar(false);
+                  setOpenDropoffClock(false);
+                  setOpenPickupClock(false);
+                }
+                setOpenPickupCalendar(!openPickupCalendar);
+              }}
             >
               <p className="text-slate-500 mr-6 text-sm lg:text-base">
                 {selectedPickupDate
@@ -160,7 +171,18 @@ const PickDrop = () => {
             <p className="font-semibold">Time</p>
             <div
               className="flex justify-between mt-4 cursor-pointer"
-              onClick={() => setOpenPickupClock(!openPickupClock)}
+              onClick={() => {
+                if (
+                  openDropoffCalendar ||
+                  openDropoffClock ||
+                  openPickupCalendar
+                ) {
+                  setOpenDropoffCalendar(false);
+                  setOpenDropoffClock(false);
+                  setOpenPickupCalendar(false);
+                }
+                setOpenPickupClock(!openPickupClock);
+              }}
             >
               <p className="text-slate-500 mr-6 text-sm lg:text-base ">
                 {selectedPickupTime
@@ -193,7 +215,14 @@ const PickDrop = () => {
             <p className="font-semibold">Date</p>
             <div
               className="flex justify-between mt-4 cursor-pointer"
-              onClick={() => setOpenDropoffCalendar(!openDropoffCalendar)}
+              onClick={() => {
+                if (openPickupCalendar || openDropoffClock || openPickupClock) {
+                  setOpenPickupCalendar(false);
+                  setOpenDropoffClock(false);
+                  setOpenPickupClock(false);
+                }
+                setOpenDropoffCalendar(!openDropoffCalendar);
+              }}
             >
               <p className="text-slate-500 mr-6 text-sm lg:text-base">
                 {selectedDropoffDate
@@ -211,7 +240,14 @@ const PickDrop = () => {
             <p className="font-semibold">Time</p>
             <div
               className="flex justify-between mt-4 cursor-pointer"
-              onClick={() => setOpenDropoffClock(!openDropoffClock)}
+              onClick={() => {
+                if (openPickupCalendar || openDropoffClock || openPickupClock) {
+                  setOpenDropoffCalendar(false);
+                  setOpenPickupCalendar(false);
+                  setOpenPickupClock(false);
+                }
+                setOpenDropoffClock(!openDropoffClock);
+              }}
             >
               <p className="text-slate-500 mr-6 text-sm lg:text-base ">
                 {selectedDropoffTime
