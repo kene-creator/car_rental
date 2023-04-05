@@ -1,4 +1,5 @@
 export interface ICar {
+  thumbnailSrc: string;
   name: string;
   gearType: string;
   gasTank: string;

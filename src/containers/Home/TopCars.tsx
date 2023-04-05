@@ -10,7 +10,7 @@ const TopCars = () => {
           View All
         </a>
       </div>
-      <div></div>
+      <div className="w-full flex gap-3 flex-nowrap overflow-scroll"></div>
     </div>
   );
 };
