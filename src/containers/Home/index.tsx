@@ -3,6 +3,7 @@ import Navbar from "../../components/Navbar";
 import TopSection from "./TopSection";
 import PickDrop from "./PickDrop";
 import TopCars from "./TopCars";
+import Footer from "../../components/footer";
 
 export default function Homepage() {
   return (
@@ -15,6 +16,7 @@ export default function Homepage() {
         <PickDrop />
         <TopCars />
       </div>
+      <Footer />
     </div>
   );
 }
