@@ -1,0 +1,53 @@
+type Car {
+  id: ID!
+  thumbnailSrc: String!
+  name: String!
+  gearType: String!
+  gasTank: String!
+  passenger: String!
+  dailyPrice: String!
+  monthlyPrice: String!
+  discountPrice: String!
+  vehicle: String!
+  mileage: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+input NewCar {
+  thumbnailSrc: String!
+  name: String!
+  gearType: String!
+  gasTank: String!
+  passenger: String!
+  dailyPrice: String!
+  monthlyPrice: String!
+  discountPrice: String!
+  vehicle: String!
+  mileage: String!
+}
+
+input updateCar {
+  id: ID!
+  thumbnailSrc: String!
+  name: String!
+  gearType: String!
+  gasTank: String!
+  passenger: String!
+  dailyPrice: String!
+  monthlyPrice: String!
+  discountPrice: String!
+  vehicle: String!
+  mileage: String!
+}
+
+type Query {
+  cars: [Car!]!
+  car(id: ID!): Car!
+}
+
+type Mutation {
+  createCar(input: NewCar!): Car!
+  updateCar(input: updateCar!): Car!
+  deleteCar(id: ID!): Car!
+}
