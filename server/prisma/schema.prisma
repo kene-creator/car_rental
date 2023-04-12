@@ -23,6 +23,7 @@ model User {
 
   @@map("users")
   Bookmarks Bookmark[]
+  cars Car[]
 }
 
 model Bookmark {
@@ -38,4 +39,26 @@ model Bookmark {
   user User @relation(fields: [userId], references: [id])
 
   @@map("bookmarks")
+}
+
+model Car {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+   thumbnailSrc String
+   name String
+   gearType String
+   gasTank String
+   passenger String
+   dailyPrice String
+   monthlyPrice String
+   discountPrice String
+   vehicle String
+   mileage String
+
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("cars")
 }
