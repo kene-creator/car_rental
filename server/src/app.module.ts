@@ -6,8 +6,9 @@ import { BookmarkModule } from './bookmark/bookmark.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { join } from 'path';
 import { CarsModule } from './cars/cars.module';
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
+import { GraphQLDateTime } from 'graphql-iso-date';
 
 @Module({
   imports: [
@@ -19,7 +20,14 @@ import { CarsModule } from './cars/cars.module';
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: true,
+      typePaths: ['./**/*.graphql'],
+      plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      playground: false,
+      resolvers: { DateTime: GraphQLDateTime },
+      subscriptions: {
+        'graphql-ws': true,
+        'subscriptions-transport-ws': true,
+      },
     }),
     PrismaModule,
     CarsModule,

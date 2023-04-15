@@ -1,12 +1,20 @@
-import { Resolver, Query } from '@nestjs/graphql';
+import { Resolver, Query, Args } from '@nestjs/graphql';
+import { Injectable } from '@nestjs/common';
 import { CarsService } from './cars.service';
+import { Car } from '@prisma/client';
 
+@Injectable()
 @Resolver()
 export class CarsResolver {
-  constructor(private carsService: CarsService) {}
+  constructor(private car: CarsService) {}
 
-  @Query((returns) => String)
-  public async cars() {
-    return 'Hello welcome to the cars resolver';
+  @Query('cars')
+  async getCars() {
+    return await this.car.allCars();
+  }
+
+  @Query('car')
+  async getCar(@Args('id') id: string) {
+    return await this.car.car(id);
   }
 }

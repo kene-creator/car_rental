@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,54 +8,48 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  email String @unique
-  hash String
-
+  id        Int        @id @default(autoincrement())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  email     String     @unique
+  hash      String
   firstName String?
-  lastName String?
+  lastName  String?
+  Bookmarks Bookmark[]
+  cars      Car[]
 
   @@map("users")
-  Bookmarks Bookmark[]
-  cars Car[]
 }
 
 model Bookmark {
-   id Int @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  title String
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  title       String
   description String?
-  link String
-
-  userId Int
-  user User @relation(fields: [userId], references: [id])
+  link        String
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
 
   @@map("bookmarks")
 }
 
 model Car {
-  id Int @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-   thumbnailSrc String
-   name String
-   gearType String
-   gasTank String
-   passenger String
-   dailyPrice String
-   monthlyPrice String
-   discountPrice String
-   vehicle String
-   mileage String
-
-  userId Int
-  user User @relation(fields: [userId], references: [id])
+  id            Int      @id @default(autoincrement())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  thumbnailSrc  String?
+  name          String
+  gearType      String
+  gasTank       String
+  passenger     String
+  dailyPrice    String
+  monthlyPrice  String
+  discountPrice String
+  vehicle       String
+  mileage       String
+  userId        Int
+  user          User     @relation(fields: [userId], references: [id])
 
   @@map("cars")
 }
