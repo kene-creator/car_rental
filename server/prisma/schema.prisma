@@ -16,7 +16,7 @@ model User {
   firstName String?
   lastName  String?
   Bookmarks Bookmark[]
-  cars      Car[]
+  cars      UserCar[]
 
   @@map("users")
 }
@@ -45,11 +45,20 @@ model Car {
   passenger     String
   dailyPrice    String
   monthlyPrice  String
-  discountPrice String
+  discountPrice String?
   vehicle       String
-  mileage       String
-  userId        Int
-  user          User     @relation(fields: [userId], references: [id])
+
+  borrowedByUser UserCar[]
 
   @@map("cars")
+}
+
+model UserCar {
+  id      Int @id @default(autoincrement())
+  userId  Int
+  carId   Int
+  user    User @relation(fields: [userId], references: [id])
+  car     Car  @relation(fields: [carId], references: [id])
+
+  @@map("user_cars")
 }

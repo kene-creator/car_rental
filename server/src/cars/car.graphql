@@ -9,11 +9,10 @@ type Car {
   passenger: String!
   dailyPrice: String!
   monthlyPrice: String!
-  discountPrice: String!
+  discountPrice: String
   vehicle: String!
-  mileage: String!
   createdAt: DateTime
-  updatedAt: String!
+  updatedAt: String
 }
 
 input NewCar {
@@ -26,7 +25,6 @@ input NewCar {
   monthlyPrice: String!
   discountPrice: String!
   vehicle: String!
-  mileage: String!
 }
 
 input UpdateCar {

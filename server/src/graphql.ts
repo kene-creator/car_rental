@@ -18,7 +18,6 @@ export class NewCar {
     monthlyPrice: string;
     discountPrice: string;
     vehicle: string;
-    mileage: string;
 }
 
 export class UpdateCar {
@@ -44,11 +43,10 @@ export class Car {
     passenger: string;
     dailyPrice: string;
     monthlyPrice: string;
-    discountPrice: string;
+    discountPrice?: Nullable<string>;
     vehicle: string;
-    mileage: string;
     createdAt?: Nullable<DateTime>;
-    updatedAt: string;
+    updatedAt?: Nullable<string>;
 }
 
 export abstract class IQuery {
