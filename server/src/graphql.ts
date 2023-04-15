@@ -49,8 +49,27 @@ export class Car {
     updatedAt?: Nullable<string>;
 }
 
+export class PopularCar {
+    id: string;
+    thumbnailSrc: string;
+    name: string;
+    gearType: string;
+    gasTank: string;
+    passenger: string;
+    dailyPrice: string;
+    monthlyPrice: string;
+    discountPrice?: Nullable<string>;
+    vehicle: string;
+    createdAt?: Nullable<DateTime>;
+    updatedAt?: Nullable<string>;
+}
+
 export abstract class IQuery {
     abstract cars(): Car[] | Promise<Car[]>;
+
+    abstract popular_cars(): PopularCar[] | Promise<PopularCar[]>;
+
+    abstract popular_car(id: string): PopularCar | Promise<PopularCar>;
 
     abstract car(id: string): Car | Promise<Car>;
 }

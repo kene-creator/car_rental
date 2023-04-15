@@ -15,6 +15,21 @@ type Car {
   updatedAt: String
 }
 
+type PopularCar {
+  id: ID!
+  thumbnailSrc: String!
+  name: String!
+  gearType: String!
+  gasTank: String!
+  passenger: String!
+  dailyPrice: String!
+  monthlyPrice: String!
+  discountPrice: String
+  vehicle: String!
+  createdAt: DateTime
+  updatedAt: String
+}
+
 input NewCar {
   thumbnailSrc: String!
   name: String!
@@ -43,6 +58,8 @@ input UpdateCar {
 
 type Query {
   cars: [Car!]!
+  popular_cars: [PopularCar!]!
+  popular_car(id: ID!): PopularCar!
   car(id: ID!): Car!
 }
 

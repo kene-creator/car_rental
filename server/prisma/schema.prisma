@@ -53,6 +53,23 @@ model Car {
   @@map("cars")
 }
 
+model PopularCar {
+  id            Int      @id @default(autoincrement())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  thumbnailSrc  String?
+  name          String
+  gearType      String
+  gasTank       String
+  passenger     String
+  dailyPrice    String
+  monthlyPrice  String
+  discountPrice String?
+  vehicle       String
+
+  @@map("popular_cars")
+}
+
 model UserCar {
   id      Int @id @default(autoincrement())
   userId  Int
