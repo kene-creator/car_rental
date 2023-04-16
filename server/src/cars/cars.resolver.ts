@@ -1,7 +1,6 @@
 import { Resolver, Query, Args } from '@nestjs/graphql';
 import { Injectable } from '@nestjs/common';
 import { CarsService } from './cars.service';
-import { Car } from '@prisma/client';
 
 @Injectable()
 @Resolver()
