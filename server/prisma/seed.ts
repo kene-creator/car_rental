@@ -1,6 +1,61 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
+async function popularCars() {
+  await prisma.popularCar.deleteMany();
+  const popularCar = await prisma.popularCar.createMany({
+    data: [
+      {
+        thumbnailSrc:
+          'https://res.cloudinary.com/dqxnzmlmj/image/upload/v1681584799/car_hepx1a.png',
+        name: 'Koenigsegg',
+        gearType: 'Automatic',
+        gasTank: '90l',
+        passenger: '2',
+        dailyPrice: '99.00',
+        monthlyPrice: '2000',
+        vehicle: 'Sport',
+      },
+      {
+        thumbnailSrc:
+          'https://res.cloudinary.com/dqxnzmlmj/image/upload/v1681584799/Car_3_dcdcg6.png',
+        name: 'Nissan GT-R',
+        gearType: 'Automatic',
+        gasTank: '80l',
+        passenger: '2',
+        dailyPrice: '80.00',
+        monthlyPrice: '2000',
+        vehicle: 'Sport',
+        discountPrice: '100.00',
+      },
+      {
+        thumbnailSrc:
+          'https://res.cloudinary.com/dqxnzmlmj/image/upload/v1681584799/Car_2_md3cwq.pngpng',
+        name: 'Rolls Royce',
+        gearType: 'Manual',
+        gasTank: '70l',
+        passenger: '2',
+        dailyPrice: '96.00',
+        monthlyPrice: '2000',
+        vehicle: 'Sedan',
+      },
+      {
+        thumbnailSrc:
+          'https://res.cloudinary.com/dqxnzmlmj/image/upload/v1681584799/Car_3_dcdcg6.png',
+        name: 'Nissan GT-R',
+        gearType: 'Automatic',
+        gasTank: '80l',
+        passenger: '2',
+        dailyPrice: '80.00',
+        monthlyPrice: '2000',
+        vehicle: 'Sport',
+        discountPrice: '100.00',
+      },
+    ],
+  });
+  console.log({ popularCar });
+}
+
 async function mainCars() {
   await prisma.car.deleteMany();
   const cars = await prisma.car.createMany({
@@ -101,6 +156,15 @@ async function mainCars() {
 }
 
 mainCars()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
+
+popularCars()
   .catch((e) => {
     console.error(e);
     process.exit(1);

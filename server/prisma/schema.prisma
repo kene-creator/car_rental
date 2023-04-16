@@ -35,19 +35,18 @@ model Bookmark {
 }
 
 model Car {
-  id            Int      @id @default(autoincrement())
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  thumbnailSrc  String?
-  name          String
-  gearType      String
-  gasTank       String
-  passenger     String
-  dailyPrice    String
-  monthlyPrice  String
-  discountPrice String?
-  vehicle       String
-
+  id             Int       @id @default(autoincrement())
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  thumbnailSrc   String?
+  name           String
+  gearType       String
+  gasTank        String
+  passenger      String
+  dailyPrice     String
+  monthlyPrice   String
+  discountPrice  String?
+  vehicle        String
   borrowedByUser UserCar[]
 
   @@map("cars")
@@ -71,11 +70,11 @@ model PopularCar {
 }
 
 model UserCar {
-  id      Int @id @default(autoincrement())
-  userId  Int
-  carId   Int
-  user    User @relation(fields: [userId], references: [id])
-  car     Car  @relation(fields: [carId], references: [id])
+  id     Int  @id @default(autoincrement())
+  userId Int
+  carId  Int
+  car    Car  @relation(fields: [carId], references: [id])
+  user   User @relation(fields: [userId], references: [id])
 
   @@map("user_cars")
 }

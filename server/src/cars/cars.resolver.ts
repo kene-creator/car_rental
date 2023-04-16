@@ -17,4 +17,9 @@ export class CarsResolver {
   async getCar(@Args('id') id: string) {
     return await this.car.car(id);
   }
+
+  @Query('popular_cars')
+  async getPopularCars() {
+    return await this.car.getPopularCars();
+  }
 }
