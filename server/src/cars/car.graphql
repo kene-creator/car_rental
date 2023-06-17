@@ -57,7 +57,7 @@ input UpdateCar {
 }
 
 type Query {
-  cars: [Car!]!
+  cars(offset: Int!): [Car!]!
   popular_cars: [PopularCar!]!
   popular_car(id: ID!): PopularCar!
   car(id: ID!): Car!

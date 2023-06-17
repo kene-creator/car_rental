@@ -65,7 +65,7 @@ export class PopularCar {
 }
 
 export abstract class IQuery {
-    abstract cars(): Car[] | Promise<Car[]>;
+    abstract cars(offset: number): Car[] | Promise<Car[]>;
 
     abstract popular_cars(): PopularCar[] | Promise<PopularCar[]>;
 
