@@ -8,7 +8,7 @@ const Button = ({ children }: ButtonProps) => {
   return (
     <button
       type="button"
-      className="bg-[#3563E9] py-2 px-1 text-white lg:w-[60%] font-semibold"
+      className="bg-[#3563E9] py-2 px-1 text-white lg:w-[60%] font-semibold whitespace-nowrap"
     >
       {children}
     </button>
