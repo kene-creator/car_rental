@@ -30,6 +30,7 @@
     "tailwind-scrollbar-hide": "^1.1.7",
     "twin.macro": "^3.3.0",
     "typescript": "^4.9.5",
+    "urql": "^4.0.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

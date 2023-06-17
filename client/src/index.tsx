@@ -6,14 +6,28 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 
+import {
+  createClient,
+  fetchExchange,
+  cacheExchange,
+  Provider as UrqlProvider,
+} from "urql";
+
+const client = createClient({
+  url: "http://localhost:3002/graphql",
+  exchanges: [cacheExchange, fetchExchange],
+});
+
 const container = document.getElementById("root")!;
 const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <UrqlProvider value={client}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </UrqlProvider>
   </React.StrictMode>
 );
 
