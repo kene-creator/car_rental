@@ -4,6 +4,7 @@ import TopSection from "./TopSection";
 import PickDrop from "./PickDrop";
 import TopCars from "./TopCars";
 import Footer from "../../components/footer";
+import AllCars from "./AllCars";
 
 export default function Homepage() {
   return (
@@ -15,6 +16,7 @@ export default function Homepage() {
         <TopSection />
         <PickDrop />
         <TopCars />
+        <AllCars />
       </div>
       <Footer />
     </div>
