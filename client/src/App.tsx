@@ -1,8 +1,10 @@
 import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import tw from "twin.macro";
 import "./App.css";
 import Homepage from "./containers/Home";
 import styled from "styled-components";
+import PaymentPage from "./containers/Payment";
 
 const AppContainer = styled.div`
   ${tw`
@@ -15,9 +17,14 @@ const AppContainer = styled.div`
 
 function App() {
   return (
-    <AppContainer>
-      <Homepage />
-    </AppContainer>
+    <BrowserRouter>
+      <AppContainer>
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/payment" element={<PaymentPage />} />
+        </Routes>
+      </AppContainer>
+    </BrowserRouter>
   );
 }
 
