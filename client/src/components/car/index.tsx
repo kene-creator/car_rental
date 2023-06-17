@@ -6,6 +6,8 @@ import DirectionsCarFilledIcon from "@mui/icons-material/DirectionsCarFilled";
 import GroupIcon from "@mui/icons-material/Group";
 import CarButton from "../CarButton";
 
+import { useNavigate } from "react-router-dom";
+
 interface ICarProps extends ICar {}
 
 export default function Car(props: ICarProps) {
@@ -21,6 +23,9 @@ export default function Car(props: ICarProps) {
     passenger,
     thumbnailSrc,
   } = props;
+
+  const navigate = useNavigate();
+
   return (
     <div className="max-w-[17rem] min-h-[22rem] max-h-[22rem] flex flex-col items-center p-5 bg-white rounded-md main_font">
       <div className="flex justify-between w-full">
@@ -62,7 +67,7 @@ export default function Car(props: ICarProps) {
           </p>
         </div>
         <div>
-          <CarButton>Rent Now</CarButton>
+          <CarButton onClick={() => navigate("/payment")}>Rent Now</CarButton>
         </div>
       </div>
     </div>
