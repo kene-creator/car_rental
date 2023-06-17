@@ -30,7 +30,7 @@ async function popularCars() {
       },
       {
         thumbnailSrc:
-          'https://res.cloudinary.com/dqxnzmlmj/image/upload/v1681584799/Car_2_md3cwq.pngpng',
+          'https://res.cloudinary.com/dqxnzmlmj/image/upload/v1681584799/Car_2_md3cwq.png',
         name: 'Rolls Royce',
         gearType: 'Manual',
         gasTank: '70l',
@@ -115,6 +115,52 @@ async function mainCars() {
         dailyPrice: '80.00',
         monthlyPrice: '2000',
         vehicle: 'SUV',
+      },
+      {
+        thumbnailSrc:
+          'https://res.cloudinary.com/dqxnzmlmj/image/upload/v1681584799/car_hepx1a.png',
+        name: 'Koenigsegg',
+        gearType: 'Automatic',
+        gasTank: '90l',
+        passenger: '2',
+        dailyPrice: '99.00',
+        monthlyPrice: '2000',
+        vehicle: 'Sport',
+      },
+      {
+        thumbnailSrc:
+          'https://res.cloudinary.com/dqxnzmlmj/image/upload/v1681584799/Car_3_dcdcg6.png',
+        name: 'Nissan GT-R',
+        gearType: 'Automatic',
+        gasTank: '80l',
+        passenger: '2',
+        dailyPrice: '80.00',
+        monthlyPrice: '2000',
+        vehicle: 'Sport',
+        discountPrice: '100.00',
+      },
+      {
+        thumbnailSrc:
+          'https://res.cloudinary.com/dqxnzmlmj/image/upload/v1681584799/Car_2_md3cwq.png',
+        name: 'Rolls Royce',
+        gearType: 'Manual',
+        gasTank: '70l',
+        passenger: '2',
+        dailyPrice: '96.00',
+        monthlyPrice: '2000',
+        vehicle: 'Sedan',
+      },
+      {
+        thumbnailSrc:
+          'https://res.cloudinary.com/dqxnzmlmj/image/upload/v1681584799/Car_3_dcdcg6.png',
+        name: 'Nissan GT-R',
+        gearType: 'Automatic',
+        gasTank: '80l',
+        passenger: '2',
+        dailyPrice: '80.00',
+        monthlyPrice: '2000',
+        vehicle: 'Sport',
+        discountPrice: '100.00',
       },
       {
         thumbnailSrc:
