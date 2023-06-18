@@ -21,7 +21,7 @@ function App() {
       <AppContainer>
         <Routes>
           <Route path="/" element={<Homepage />} />
-          <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/payment/:carId" element={<PaymentPage />} />
         </Routes>
       </AppContainer>
     </BrowserRouter>
