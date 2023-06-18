@@ -6,6 +6,7 @@ import { CircularProgress } from "@mui/material";
 
 import { useQuery } from "urql";
 import { ICar } from "../../typings/car";
+import { useDispatch } from "react-redux";
 
 const ALL_CARS = `
   query Query($offset: Int!) {

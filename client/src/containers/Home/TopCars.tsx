@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import SectionWrapper from "../../hoc/SectionWrapper";
 import Car from "../../components/car";
@@ -7,6 +7,8 @@ import { CircularProgress } from "@mui/material";
 
 import { useQuery } from "urql";
 import { ICar } from "../../typings/car";
+import { useDispatch } from "react-redux";
+import { fetchPopularCarsSuccess } from "../../app/popular_cars.state";
 
 const POPULAR_CARS = `
 query Query {
@@ -35,6 +37,14 @@ const TopCars = () => {
   const [{ fetching, data, error }] = useQuery<PopularCarsResponse>({
     query: POPULAR_CARS,
   });
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (data) {
+      dispatch(fetchPopularCarsSuccess(data.popular_cars));
+    }
+  }, [data, dispatch]);
 
   if (fetching) {
     return (
