@@ -20,7 +20,7 @@ export default function CountrySelect({ onCountryChange }: CountrySelectProps) {
   return (
     <Autocomplete
       id="country-select-demo"
-      sx={{ width: 230, mt: "1rem" }}
+      sx={{ width: 200, mt: "1rem" }}
       options={countries}
       autoHighlight
       getOptionLabel={(option) => option.label}
