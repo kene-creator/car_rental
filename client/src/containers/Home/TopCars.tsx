@@ -84,6 +84,7 @@ const TopCars = () => {
             discountPrice={car.discountPrice}
             passenger={car.passenger}
             thumbnailSrc={car.thumbnailSrc}
+            id={car.id}
           ></Car>
         ))}
       </div>
