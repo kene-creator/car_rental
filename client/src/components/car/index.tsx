@@ -22,6 +22,7 @@ export default function Car(props: ICarProps) {
     discountPrice,
     passenger,
     thumbnailSrc,
+    id,
   } = props;
 
   const navigate = useNavigate();
@@ -67,7 +68,9 @@ export default function Car(props: ICarProps) {
           </p>
         </div>
         <div>
-          <CarButton onClick={() => navigate("/payment")}>Rent Now</CarButton>
+          <CarButton onClick={() => navigate(`/payment/${id}`)}>
+            Rent Now
+          </CarButton>
         </div>
       </div>
     </div>
