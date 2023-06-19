@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ICar } from "../typings/car";
 
-interface PopularCarsState {
+export interface PopularCarsState {
   popularCars: ICar[];
   loading: boolean;
   error: string | null;
