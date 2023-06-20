@@ -5,6 +5,7 @@ import RentalSummary from "./widgets/RentalSummary";
 import BillingInfo from "./widgets/BillingInfo";
 import Navbar from "../../components/Navbar";
 import RentalInfo from "./widgets/RentalInfo";
+import PaymentMethod from "./widgets/PaymentMethod";
 
 function PaymentPage() {
   const { carId } = useParams();
@@ -41,6 +42,7 @@ function PaymentPage() {
               onBillingInfoChange={handleBillingInfoChange}
             />
             <RentalInfo />
+            <PaymentMethod />
           </form>
           <div>
             {popularCar && (
