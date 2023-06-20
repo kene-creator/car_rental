@@ -24,12 +24,12 @@ export class CarsService {
     const take = remainingCars >= 8 ? 8 : remainingCars;
 
     if (remainingCars < 8) {
-      return this.prisma.car.findMany({}); // Return all cars if remaining cars are less than 8
+      return this.prisma.car.findMany({});
     }
 
     return this.prisma.car.findMany({
-      take, // Take the appropriate number of cars
-      skip: offset, // Skip the specified offset
+      take,
+      skip: offset,
     });
   }
 

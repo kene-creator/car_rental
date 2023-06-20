@@ -9,6 +9,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { CarsModule } from './cars/cars.module';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { GraphQLDateTime } from 'graphql-iso-date';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { GraphQLDateTime } from 'graphql-iso-date';
     }),
     PrismaModule,
     CarsModule,
+    PaymentModule,
   ],
 })
 export class AppModule {}
