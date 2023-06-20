@@ -78,3 +78,12 @@ model UserCar {
 
   @@map("user_cars")
 }
+
+model Paystack_Payment_References {
+ id              String   @id @default(cuid())
+  authorizationUrl String
+  accessCode       String
+  reference        String
+
+  @@map("paystack_payment_references")
+}
