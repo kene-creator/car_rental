@@ -7,6 +7,7 @@ import { CircularProgress } from "@mui/material";
 import { useQuery } from "urql";
 import { ICar } from "../../typings/car";
 import { useDispatch } from "react-redux";
+import { fetchAllCarsSuccess } from "../../app/all_cars.state";
 
 const ALL_CARS = `
   query Query($offset: Int!) {
@@ -40,7 +41,13 @@ const AllCars = () => {
     }
   );
 
-  console.log(data?.cars);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (data) {
+      dispatch(fetchAllCarsSuccess(data.cars));
+    }
+  }, [data, dispatch]);
 
   useEffect(() => {
     reexecuteQuery({ requestPolicy: "network-only" });
@@ -88,6 +95,7 @@ const AllCars = () => {
             discountPrice={car.discountPrice}
             passenger={car.passenger}
             thumbnailSrc={car.thumbnailSrc}
+            id={car.id}
           ></Car>
         ))}
       </div>

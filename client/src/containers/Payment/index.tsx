@@ -8,8 +8,12 @@ import RentalInfo from "./widgets/RentalInfo";
 
 function PaymentPage() {
   const { carId } = useParams();
-  const car = useSelector((state: any) => {
-    return state?.popularCars.popularCars.find((car: any) => car.id === carId);
+  const popularCar = useSelector((state: any) => {
+    return state.popularCars.popularCars.find((car: any) => car.id === carId);
+  });
+
+  const allCars = useSelector((state: any) => {
+    return state.allCars.cars.find((car: any) => car.id === carId);
   });
 
   const [billingInfo, setBillingInfo] = useState({
@@ -25,7 +29,6 @@ function PaymentPage() {
       [fieldName]: value,
     }));
   };
-  
 
   return (
     <>
@@ -40,11 +43,20 @@ function PaymentPage() {
             <RentalInfo />
           </form>
           <div>
-            <RentalSummary
-              thumbnailSrc={car.thumbnailSrc}
-              name={car.name}
-              dailyPrice={car.dailyPrice}
-            />
+            {popularCar && (
+              <RentalSummary
+                thumbnailSrc={popularCar.thumbnailSrc}
+                name={popularCar.name}
+                dailyPrice={popularCar.dailyPrice}
+              />
+            )}
+            {allCars && (
+              <RentalSummary
+                thumbnailSrc={allCars.thumbnailSrc}
+                name={allCars.name}
+                dailyPrice={allCars.dailyPrice}
+              />
+            )}
           </div>
         </div>
       </div>
