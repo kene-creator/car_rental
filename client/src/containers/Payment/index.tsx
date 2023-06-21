@@ -12,7 +12,6 @@ function PaymentPage() {
   const popularCar = useSelector((state: any) => {
     return state.popularCars.popularCars.find((car: any) => car.id === carId);
   });
-
   const allCars = useSelector((state: any) => {
     return state.allCars.cars.find((car: any) => car.id === carId);
   });
@@ -31,6 +30,14 @@ function PaymentPage() {
     }));
   };
 
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
+
+  const handlePaymentMethodChange = (paymentMethod: string) => {
+    setSelectedPaymentMethod(paymentMethod);
+  };
+
+  console.log(selectedPaymentMethod);
+
   return (
     <>
       <Navbar />
@@ -42,7 +49,10 @@ function PaymentPage() {
               onBillingInfoChange={handleBillingInfoChange}
             />
             <RentalInfo />
-            <PaymentMethod />
+            <PaymentMethod
+              selectedPaymentMethod={selectedPaymentMethod}
+              onPaymentMethodChange={handlePaymentMethodChange}
+            />
           </form>
           <div>
             {popularCar && (
