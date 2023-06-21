@@ -80,10 +80,38 @@ model UserCar {
 }
 
 model Paystack_Payment_References {
- id              String   @id @default(cuid())
+  id               String   @id @default(cuid())
   authorizationUrl String
   accessCode       String
   reference        String
+  createdAt        DateTime @default(now())
 
   @@map("paystack_payment_references")
+}
+
+model Paystack_Transaction_Verification {
+  id               String  @id @default(cuid())
+  transactionId    BigInt
+  domain           String
+  status           String
+  reference        String
+  amount           Int
+  gateway_response String
+  paid_at          String
+  channel          String
+  currency         String
+  ip_address       String
+  attempts         Int
+  success_status Boolean
+  authorization_code    String
+  card_type String
+  signature String
+  mobile           Boolean
+  first_name       String?
+  last_name        String?
+  email            String
+  customer_code    String
+
+ createdAt        DateTime @default(now())
+  @@map("paystack_transaction_verification")
 }
