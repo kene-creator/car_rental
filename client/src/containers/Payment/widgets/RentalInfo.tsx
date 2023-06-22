@@ -19,7 +19,15 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import CountrySelect from "../../../components/CountryList";
 
-function RentalInfo() {
+interface RentalInfoProps {
+  rentalInfo: any; // Update the type to match the structure of your rentalInfo data
+  rentalInfoState: boolean;
+}
+
+const RentalInfo: React.FC<RentalInfoProps> = ({
+  rentalInfo,
+  rentalInfoState,
+}) => {
   const [pickupDate, setPickupDate] = React.useState<Dayjs | null>(
     dayjs(new Date())
   );
@@ -54,7 +62,7 @@ function RentalInfo() {
   const handlePickupDateChange = (date: any) => {
     setPickupDate(date);
     setSelectedPickupDate(date["$d"]);
-    const isoString = selectedPickupDate?.toISOString();
+    const isoString =  new Date(date["$d"]).toISOString();
     if (isoString) {
       dispatch(setPickUpDate(isoString));
     }
@@ -63,7 +71,8 @@ function RentalInfo() {
   const handleDropoffDateChange = (date: any) => {
     setDropoffDate(date);
     setSelectedDropoffDate(date["$d"]);
-    const isoString = selectedDropoffDate?.toISOString();
+
+    const isoString = new Date(date["$d"]).toISOString();
     if (isoString) {
       dispatch(setDropOffDate(isoString));
     }
@@ -99,18 +108,23 @@ function RentalInfo() {
 
   const handleCountryPickUpChange = (country: string): void => {
     setSelectedPickUpCountry(country);
-    dispatch(setPickUpLocation(selectedPickUpCountry));
+    dispatch(setPickUpLocation(country));
   };
   const handleCountryDropOffChange = (country: string): void => {
     setSelectedDropOffCountry(country);
-    dispatch(setDropOffLocation(selectedDropOffCountry));
+    dispatch(setDropOffLocation(country));
   };
 
   return (
     <div className="bg-white rounded-lg p-5 main_font">
+      {rentalInfoState && (
+        <p className="text-[0.8rem] text-red-600 font-medium">
+          Please fill/select your pick-up and drop-off date *
+        </p>
+      )}
       <div className="pb-8">
         <h3 className="font-bold text-[1.3rem]">Rental Info</h3>
-        <div className="text-[#90A3BF] flex justify-between items-center">
+        <div className="text-[#90A3BF] flex justify-between items-center gap-4 text-[0.8rem] lg:text-[1rem]">
           <p>Please select your rental date</p>
           <p>Step 2 of 4</p>
         </div>
@@ -370,6 +384,6 @@ function RentalInfo() {
       </div>
     </div>
   );
-}
+};
 
 export default RentalInfo;
