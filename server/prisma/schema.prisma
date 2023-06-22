@@ -115,3 +115,15 @@ model Paystack_Transaction_Verification {
  createdAt        DateTime @default(now())
   @@map("paystack_transaction_verification")
 }
+
+model Rental_Data {
+  id               String  @id @default(cuid())
+  pick_up_location String
+  pick_up_date     String
+  pick_up_time     String
+  drop_off_location String
+  drop_off_date     String
+  drop_off_time     String
+
+  @@map("rental_data")
+}
