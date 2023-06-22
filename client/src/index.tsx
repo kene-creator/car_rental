@@ -22,6 +22,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import allCarsReducer from "./app/all_cars.state";
 import popularCarsReducer from "./app/popular_cars.state";
 import rentalInfoReducer from "./app/rental_info.state";
+import paymentReducer from "./app/payment_state";
 
 import {
   createClient,
@@ -39,6 +40,7 @@ const rootReducer = combineReducers({
   allCars: allCarsReducer,
   popularCars: popularCarsReducer,
   rentalInfo: rentalInfoReducer,
+  payment: paymentReducer,
 });
 
 const persistConfig = { key: "root", storage, version: 1 };
