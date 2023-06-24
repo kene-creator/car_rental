@@ -5,6 +5,7 @@ import "./App.css";
 import Homepage from "./containers/Home";
 import styled from "styled-components";
 import PaymentPage from "./containers/Payment";
+import Dashboard from "./containers/Dashboard";
 
 const AppContainer = styled.div`
   ${tw`
@@ -22,6 +23,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/payment/:carId" element={<PaymentPage />} />
+          <Route path="/dashboard/:userId" element={<Dashboard />} />
         </Routes>
       </AppContainer>
     </BrowserRouter>
