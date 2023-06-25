@@ -9,7 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthService {
   constructor(private prisma: PrismaService, private jwt: JwtService) {}
 
-  async signup(dto: AuthDto) {
+  async signup(dto: AuthDto): Promise<{ access_token: string }> {
     try {
       //* generate the password hash
       const hash = await argon.hash(dto.password);
@@ -42,7 +42,7 @@ export class AuthService {
     }
   }
 
-  async signin(dto: AuthDto) {
+  async signin(dto: AuthDto): Promise<{ access_token: string }> {
     //find the user in the db
     const user = await this.prisma.user.findUnique({
       where: {
