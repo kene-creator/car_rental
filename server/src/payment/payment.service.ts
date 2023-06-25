@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { firstValueFrom, map } from 'rxjs';
 import { PrismaService } from '../prisma/prisma.service';
 import cuid from 'cuid';
+import { InitializeDto } from './dto';
 
 @Injectable()
 export class PaymentService {
@@ -14,12 +15,12 @@ export class PaymentService {
     private readonly prisma: PrismaService,
   ) {}
 
-  async initializeTransaction(email: string, amount: string): Promise<any> {
+  async initializeTransaction(dto: InitializeDto): Promise<any> {
     const secretKey = this.configService.get('PAYSTACK_SECRET_KEY');
 
     const params = JSON.stringify({
-      email,
-      amount,
+      email: dto.email,
+      amount: dto.amount,
     });
 
     const options: AxiosRequestConfig = {
