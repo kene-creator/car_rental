@@ -6,21 +6,23 @@ import {
   HttpStatus,
   Param,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { PaymentService } from './payment.service';
+import { JwtGuard } from 'src/auth/guard';
+import { InitializeDto } from './dto';
 
 @Controller('payment')
+@UseGuards(JwtGuard)
 export class PaymentController {
   constructor(private readonly paystackService: PaymentService) {}
 
   @Post('initialize')
   async initializeTransaction(
-    @Body('email') email: string,
-    @Body('amount') amount: string,
+    @Body() initializeDto: InitializeDto,
   ): Promise<any> {
     const transaction = await this.paystackService.initializeTransaction(
-      email,
-      amount,
+      initializeDto,
     );
 
     return transaction;
