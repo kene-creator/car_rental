@@ -23,6 +23,7 @@ import allCarsReducer from "./app/all_cars.state";
 import popularCarsReducer from "./app/popular_cars.state";
 import rentalInfoReducer from "./app/rental_info.state";
 import paymentReducer from "./app/payment_state";
+import authReducer from "./app/auth_state";
 
 import {
   createClient,
@@ -41,6 +42,7 @@ const rootReducer = combineReducers({
   popularCars: popularCarsReducer,
   rentalInfo: rentalInfoReducer,
   payment: paymentReducer,
+  auth: authReducer,
 });
 
 const persistConfig = { key: "root", storage, version: 1 };
