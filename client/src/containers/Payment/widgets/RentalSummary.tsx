@@ -14,7 +14,7 @@ const RentalSummary = (props: CarProps) => {
     <div className="bg-white p-5 rounded-lg main_font">
       <div className="py-2">
         <h3 className="font-bold text-[1.2rem]">Rental Summary</h3>
-        <p className="text-[#90A3BF] text-[0.8rem] lg:text-[1rem] gap-4 text-[0.8rem] lg:text-[1rem]">
+        <p className="text-[#90A3BF] text-[0.8rem] lg:text-[1rem] gap-4">
           Prices may change depending on the length of the rental and the price
           of your rental car.
         </p>
