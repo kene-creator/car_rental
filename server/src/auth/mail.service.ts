@@ -22,7 +22,7 @@ export class MailService {
     to: string,
     verificationToken: string,
   ): Promise<void> {
-    const verificationLink = `http://localhost:3002/verify/${verificationToken}`;
+    const verificationLink = `http://localhost:3000/verify/email/${verificationToken}`;
 
     const mailOptions: nodemailer.SendMailOptions = {
       from: 'kayyungx@gmail.com',
