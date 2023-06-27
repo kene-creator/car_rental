@@ -19,9 +19,9 @@ const LoginPage: React.FC = () => {
 
   const auth = useSelector((state: any) => state.auth);
 
-  const [loading, setIsLoading] = React.useState<boolean>(false);
-
   console.log(auth);
+
+  const [loading, setIsLoading] = React.useState<boolean>(false);
 
   const initialValues: FormValues = {
     email: "",
@@ -53,7 +53,6 @@ const LoginPage: React.FC = () => {
         const data = await response.json();
         dispatch(loginSuccess(data));
         setIsLoading(false);
-        console.log(data);
       } else {
         // Login failed, handle the error
         console.log("Login failed");
