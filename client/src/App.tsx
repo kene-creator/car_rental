@@ -8,6 +8,9 @@ import PaymentPage from "./containers/Payment";
 import Dashboard from "./containers/Dashboard";
 import LoginPage from "./containers/Login_Registration/Login";
 import RegistrationPage from "./containers/Login_Registration/Registration";
+import EmailConfirmation from "./containers/Login_Registration/Registration/Email_Confirmation";
+import CheckEmail from "./containers/Login_Registration/Registration/CheckEmail";
+import { useSelector } from "react-redux";
 
 const AppContainer = styled.div`
   ${tw`
@@ -19,15 +22,24 @@ const AppContainer = styled.div`
 `;
 
 function App() {
+  const auth = useSelector((state: any) => state.auth);
+  console.log(auth.accessToken, auth.isEmailVerified);
+
   return (
     <BrowserRouter>
       <AppContainer>
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/payment/:carId" element={<PaymentPage />} />
-          <Route path="/dashboard/:userId" element={<Dashboard />} />
+          {auth.isEmailVerified && auth.accessToken ? (
+            <Route path="/dashboard" element={<Dashboard />} />
+          ) : (
+            <Route path="/login" element={<LoginPage />} />
+          )}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/registration" element={<RegistrationPage />} />
+          <Route path="/verify/email/:token" element={<EmailConfirmation />} />
+          <Route path="/check_email" element={<CheckEmail />} />
         </Routes>
       </AppContainer>
     </BrowserRouter>
