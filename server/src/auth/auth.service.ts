@@ -1,12 +1,17 @@
-import { Injectable, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  ForbiddenException,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { AuthDto } from './dto';
+import { AuthDto, CreateUserDto } from './dto';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { randomBytes } from 'crypto';
 import { JwtService } from '@nestjs/jwt';
 import { v4 as uuidv4 } from 'uuid';
 import { MailService } from './mail.service';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -16,7 +21,9 @@ export class AuthService {
     private mailService: MailService,
   ) {}
 
-  async signup(dto: AuthDto): Promise<{ access_token: string }> {
+  async signup(
+    dto: CreateUserDto,
+  ): Promise<{ access_token: string; verification_token: string }> {
     try {
       //* generate the password hash
       const hash = await argon.hash(dto.password);
@@ -29,14 +36,9 @@ export class AuthService {
           id: uuidv4(),
           email: dto.email,
           hash,
+          firstName: dto.firstName,
+          lastName: dto.lastName,
           emailToken: verificationToken,
-        },
-        select: {
-          id: true,
-          email: true,
-          createdAt: true,
-          updatedAt: true,
-          hash: false,
         },
       });
 
@@ -47,7 +49,14 @@ export class AuthService {
         verificationToken,
       );
 
-      return this.signToken(user.id, user.email);
+      const token = await this.signToken(user.id, user.email);
+
+      delete user.hash;
+
+      return {
+        access_token: token.access_token,
+        verification_token: verificationToken,
+      };
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError) {
         if (err.code === 'P2002') {
@@ -59,7 +68,7 @@ export class AuthService {
     }
   }
 
-  async signin(dto: AuthDto): Promise<{ access_token: string }> {
+  async signin(dto: AuthDto): Promise<{ access_token: string; user: User }> {
     //find the user in the db
     const user = await this.prisma.user.findUnique({
       where: {
@@ -80,7 +89,11 @@ export class AuthService {
       throw new ForbiddenException('Email or password is wrong');
     }
 
-    return this.signToken(user.id, user.email);
+    const token = await this.signToken(user.id, user.email);
+
+    delete user.hash;
+
+    return { access_token: token.access_token, user };
   }
 
   async signToken(
@@ -112,10 +125,37 @@ export class AuthService {
   }
 
   async verifyEmail(token: string): Promise<boolean> {
-    const verifyEmail = await this.prisma.user.findUnique({
-      where: {
-        emailToken: token,
-      },
-    });
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: {
+          emailToken: token,
+        },
+      });
+
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+
+      await this.prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          emailvalid: true,
+        },
+      });
+
+      return true; //* Verification successful
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        //? Handle specific Prisma errors
+        if (error.code === 'P2025') {
+          throw new NotFoundException('User not found');
+        }
+      }
+
+      // Handle other errors
+      throw error;
+    }
   }
 }
