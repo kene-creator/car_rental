@@ -15,7 +15,10 @@ export class PaymentService {
     private readonly prisma: PrismaService,
   ) {}
 
-  async initializeTransaction(dto: InitializeDto): Promise<any> {
+  async initializeTransaction(
+    dto: InitializeDto,
+    userId: string,
+  ): Promise<any> {
     const secretKey = this.configService.get('PAYSTACK_SECRET_KEY');
 
     const params = JSON.stringify({
@@ -44,6 +47,7 @@ export class PaymentService {
           authorizationUrl: response.data.authorization_url,
           accessCode: response.data.access_code,
           reference: response.data.reference,
+          userId,
         },
       });
       return response;
@@ -52,7 +56,7 @@ export class PaymentService {
     }
   }
 
-  async verifyTransaction(reference: string): Promise<any> {
+  async verifyTransaction(reference: string, userId: string): Promise<any> {
     const secretKey = this.configService.get('PAYSTACK_SECRET_KEY');
 
     const options = {
@@ -72,6 +76,7 @@ export class PaymentService {
       await this.prisma.paystack_Transaction_Verification.create({
         data: {
           id: cuid(),
+          userId,
           transactionId: response.data.id,
           domain: response.data.domain,
           status: response.data.status,
