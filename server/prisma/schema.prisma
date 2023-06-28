@@ -1,26 +1,29 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  schemas  = ["base", "transactional"]
 }
 
 model User {
-  id        String        @id @default(uuid())
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  email     String     @unique
-  hash      String
-  emailToken String?  @unique
-  emailvalid Boolean? @default(false)
-  firstName String?
-  lastName  String?
-  Bookmarks Bookmark[]
-  cars      UserCar[]
+  id         String     @id @default(uuid())
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  email      String     @unique
+  hash       String
+  emailToken String?    @unique
+  emailvalid Boolean?   @default(false)
+  firstName  String?
+  lastName   String?
+  Bookmarks  Bookmark[]
+  cars       UserCar[]
 
   @@map("users")
+  @@schema("base")
 }
 
 model Bookmark {
@@ -34,6 +37,7 @@ model Bookmark {
   user        User     @relation(fields: [userId], references: [id])
 
   @@map("bookmarks")
+  @@schema("base")
 }
 
 model Car {
@@ -52,6 +56,7 @@ model Car {
   borrowedByUser UserCar[]
 
   @@map("cars")
+  @@schema("base")
 }
 
 model PopularCar {
@@ -69,16 +74,18 @@ model PopularCar {
   vehicle       String
 
   @@map("popular_cars")
+  @@schema("base")
 }
 
 model UserCar {
-  id     Int  @id @default(autoincrement())
+  id     Int    @id @default(autoincrement())
   userId String
   carId  Int
-  car    Car  @relation(fields: [carId], references: [id])
-  user   User @relation(fields: [userId], references: [id])
+  car    Car    @relation(fields: [carId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
 
   @@map("user_cars")
+  @@schema("base")
 }
 
 model Paystack_Payment_References {
@@ -86,46 +93,51 @@ model Paystack_Payment_References {
   authorizationUrl String
   accessCode       String
   reference        String
+  userId String
   createdAt        DateTime @default(now())
 
   @@map("paystack_payment_references")
+  @@schema("transactional")
 }
 
 model Paystack_Transaction_Verification {
-  id               String  @id @default(cuid())
-  transactionId    BigInt
-  domain           String
-  status           String
-  reference        String
-  amount           Int
-  gateway_response String
-  paid_at          String
-  channel          String
-  currency         String
-  ip_address       String
-  attempts         Int
-  success_status Boolean
-  authorization_code    String
-  card_type String
-  signature String
-  mobile           Boolean
-  first_name       String?
-  last_name        String?
-  email            String
-  customer_code    String
+  id                 String   @id @default(cuid())
+  userId String
+  transactionId      BigInt
+  domain             String
+  status             String
+  reference          String
+  amount             Int
+  gateway_response   String
+  paid_at            String
+  channel            String
+  currency           String
+  ip_address         String
+  attempts           Int
+  success_status     Boolean
+  authorization_code String
+  card_type          String
+  signature          String
+  mobile             Boolean
+  first_name         String?
+  last_name          String?
+  email              String
+  customer_code      String
+  createdAt          DateTime @default(now())
 
- createdAt        DateTime @default(now())
   @@map("paystack_transaction_verification")
+  @@schema("transactional")
 }
 
 model Rental_Data {
-  id               String  @id @default(cuid())
-  pick_up_location String
-  pick_up_date     String
-  pick_up_time     String
+  id                String @id @default(cuid())
+  pick_up_location  String
+  pick_up_date      String
+  pick_up_time      String
   drop_off_location String
   drop_off_date     String
   drop_off_time     String
 
   @@map("rental_data")
+  @@schema("transactional")
 }
