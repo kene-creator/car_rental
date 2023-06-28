@@ -17,22 +17,28 @@ import { InitializeDto } from './dto';
 export class PaymentController {
   constructor(private readonly paystackService: PaymentService) {}
 
-  @Post('initialize')
+  @Post('initialize/:userId')
   async initializeTransaction(
     @Body() initializeDto: InitializeDto,
+    @Param('userId') userId: string,
   ): Promise<any> {
     const transaction = await this.paystackService.initializeTransaction(
       initializeDto,
+      userId,
     );
 
     return transaction;
   }
 
-  @Get('verify/:reference')
-  async verifyTransaction(@Param('reference') reference: string): Promise<any> {
+  @Get('verify/:reference/:userId')
+  async verifyTransaction(
+    @Param('reference') reference: string,
+    @Param('userId') userId: string,
+  ): Promise<any> {
     try {
       const transaction = await this.paystackService.verifyTransaction(
         reference,
+        userId,
       );
       return transaction;
     } catch (error) {
