@@ -23,7 +23,6 @@ const AppContainer = styled.div`
 
 function App() {
   const auth = useSelector((state: any) => state.auth);
-  console.log(auth.accessToken, auth.isEmailVerified);
 
   return (
     <BrowserRouter>

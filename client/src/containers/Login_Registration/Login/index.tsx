@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { TextField, Button, CircularProgress } from "@mui/material";
 import { ArrowForward } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginSuccess } from "../../../app/auth_state";
 
 import video from "../../../assets/videos/Untitled.mp4";
@@ -16,6 +16,7 @@ interface FormValues {
 
 const LoginPage: React.FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const auth = useSelector((state: any) => state.auth);
 
@@ -53,6 +54,7 @@ const LoginPage: React.FC = () => {
         const data = await response.json();
         dispatch(loginSuccess(data));
         setIsLoading(false);
+        navigate("/dashboard");
       } else {
         // Login failed, handle the error
         console.log("Login failed");
