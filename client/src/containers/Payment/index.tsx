@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import RentalSummary from "./widgets/RentalSummary";
@@ -20,6 +19,7 @@ function PaymentPage() {
     return state.allCars.cars.find((car: any) => car.id === carId);
   });
   const rentalInfo = useSelector((state: any) => state.rentalInfo);
+  const auth = useSelector((state: any) => state.auth);
 
   const [billingInfo, setBillingInfo] = useState({
     name: "",
@@ -78,7 +78,7 @@ function PaymentPage() {
         console.log(amount);
 
         const response = await fetch(
-          "http://localhost:3002/payment/initialize",
+          `http://localhost:3002/payment/initialize/${auth?.user.id}`,
           {
             method: "POST",
             headers: {
