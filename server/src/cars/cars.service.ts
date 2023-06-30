@@ -9,7 +9,7 @@ export class CarsService {
   public async car(id: string): Promise<Car | null> {
     return this.prisma.car.findUnique({
       where: {
-        id: Number(id),
+        id: id,
       },
     });
   }

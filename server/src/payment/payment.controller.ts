@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { PaymentService } from './payment.service';
 import { JwtGuard } from 'src/auth/guard';
-import { InitializeDto } from './dto';
+import { CarDto, InitializeDto } from './dto';
 
 @Controller('payment')
 @UseGuards(JwtGuard)
@@ -30,15 +30,17 @@ export class PaymentController {
     return transaction;
   }
 
-  @Get('verify/:reference/:userId')
+  @Post('verify/:reference/:userId')
   async verifyTransaction(
     @Param('reference') reference: string,
     @Param('userId') userId: string,
+    @Body() cars: CarDto[],
   ): Promise<any> {
     try {
       const transaction = await this.paystackService.verifyTransaction(
         reference,
         userId,
+        cars,
       );
       return transaction;
     } catch (error) {
