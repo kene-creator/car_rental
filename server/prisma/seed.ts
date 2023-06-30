@@ -56,6 +56,27 @@ async function popularCars() {
   console.log({ popularCar });
 }
 
+async function orderStatus() {
+  await prisma.orderStatus.deleteMany();
+  const orderStatus = await prisma.orderStatus.createMany({
+    data: [
+      {
+        name: 'Processed',
+      },
+      {
+        name: 'Shipped',
+      },
+      {
+        name: 'Delivered',
+      },
+      {
+        name: 'Cancelled',
+      },
+    ],
+  });
+  console.log({ orderStatus });
+}
+
 async function mainCars() {
   await prisma.car.deleteMany();
   const cars = await prisma.car.createMany({
@@ -211,6 +232,15 @@ mainCars()
   });
 
 popularCars()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
+
+orderStatus()
   .catch((e) => {
     console.error(e);
     process.exit(1);
