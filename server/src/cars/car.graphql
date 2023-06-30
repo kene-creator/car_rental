@@ -1,7 +1,7 @@
 scalar DateTime
 
 type Car {
-  id: ID!
+  id: String!
   thumbnailSrc: String!
   name: String!
   gearType: String!
@@ -16,7 +16,7 @@ type Car {
 }
 
 type PopularCar {
-  id: ID!
+  id: String!
   thumbnailSrc: String!
   name: String!
   gearType: String!
