@@ -6,7 +6,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  schemas  = ["base", "transactional"]
+  schemas  = ["base", "order", "transactional"]
 }
 
 model User {
@@ -21,6 +21,7 @@ model User {
   lastName   String?
   Bookmarks  Bookmark[]
   cars       UserCar[]
+  orders     Order[]
 
   @@map("users")
   @@schema("base")
@@ -41,26 +42,7 @@ model Bookmark {
 }
 
 model Car {
-  id             Int       @id @default(autoincrement())
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  thumbnailSrc   String?
-  name           String
-  gearType       String
-  gasTank        String
-  passenger      String
-  dailyPrice     String
-  monthlyPrice   String
-  discountPrice  String?
-  vehicle        String
-  borrowedByUser UserCar[]
-
-  @@map("cars")
-  @@schema("base")
-}
-
-model PopularCar {
-  id            Int      @id @default(autoincrement())
+  id           String      @id @default(cuid())
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   thumbnailSrc  String?
@@ -72,6 +54,26 @@ model PopularCar {
   monthlyPrice  String
   discountPrice String?
   vehicle       String
+  orders        Order[]  @relation("OrderCars")
+
+  @@map("cars")
+  @@schema("base")
+}
+
+model PopularCar {
+  id            String      @id @default(cuid())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  thumbnailSrc  String?
+  name          String
+  gearType      String
+  gasTank       String
+  passenger     String
+  dailyPrice    String
+  monthlyPrice  String
+  discountPrice String?
+  vehicle       String
+  orders        Order[]  @relation("OrderPopularCars")
 
   @@map("popular_cars")
   @@schema("base")
@@ -81,7 +83,6 @@ model UserCar {
   id     Int    @id @default(autoincrement())
   userId String
   carId  Int
-  car    Car    @relation(fields: [carId], references: [id])
   user   User   @relation(fields: [userId], references: [id])
 
   @@map("user_cars")
@@ -93,8 +94,8 @@ model Paystack_Payment_References {
   authorizationUrl String
   accessCode       String
   reference        String
-  userId String
   createdAt        DateTime @default(now())
+  userId           String
 
   @@map("paystack_payment_references")
   @@schema("transactional")
@@ -102,7 +103,6 @@ model Paystack_Payment_References {
 
 model Paystack_Transaction_Verification {
   id                 String   @id @default(cuid())
-  userId String
   transactionId      BigInt
   domain             String
   status             String
@@ -124,6 +124,7 @@ model Paystack_Transaction_Verification {
   email              String
   customer_code      String
   createdAt          DateTime @default(now())
+  userId             String
 
   @@map("paystack_transaction_verification")
   @@schema("transactional")
@@ -140,4 +141,28 @@ model Rental_Data {
 
   @@map("rental_data")
   @@schema("transactional")
+}
+
+model OrderStatus {
+  id     Int     @id @default(autoincrement())
+  name   String
+  orders Order[]
+
+  @@map("order_status")
+  @@schema("order")
+}
+
+model Order {
+  id          String       @id @default(cuid())
+  userId      String
+  statusId    Int
+  total       Float
+  createdAt   DateTime     @default(now())
+  status      OrderStatus  @relation(fields: [statusId], references: [id])
+  user        User         @relation(fields: [userId], references: [id])
+  cars        Car[]        @relation("OrderCars")
+  popularCars PopularCar[] @relation("OrderPopularCars")
+
+  @@map("order")
+  @@schema("order")
 }
