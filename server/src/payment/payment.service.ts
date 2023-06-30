@@ -5,7 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { firstValueFrom, map } from 'rxjs';
 import { PrismaService } from '../prisma/prisma.service';
 import cuid from 'cuid';
-import { InitializeDto } from './dto';
+import { CarDto, InitializeDto } from './dto';
 
 @Injectable()
 export class PaymentService {
@@ -20,6 +20,8 @@ export class PaymentService {
     userId: string,
   ): Promise<any> {
     const secretKey = this.configService.get('PAYSTACK_SECRET_KEY');
+
+    console.log(secretKey, dto);
 
     const params = JSON.stringify({
       email: dto.email,
@@ -56,7 +58,11 @@ export class PaymentService {
     }
   }
 
-  async verifyTransaction(reference: string, userId: string): Promise<any> {
+  async verifyTransaction(
+    reference: string,
+    userId: string,
+    cars: CarDto[],
+  ): Promise<any> {
     const secretKey = this.configService.get('PAYSTACK_SECRET_KEY');
 
     const options = {
@@ -99,6 +105,50 @@ export class PaymentService {
           customer_code: response.data.customer.customer_code,
         },
       });
+
+      if (response.data.status === 'success') {
+        const carIds = cars.map((car) => car.id);
+
+        // Check if all car IDs exist in the Car table
+        const existingCars = await this.prisma.car.findMany({
+          where: {
+            id: {
+              in: carIds,
+            },
+          },
+        });
+
+        // Check if all car IDs exist in the PopularCar table
+        const existingPopularCars = await this.prisma.popularCar.findMany({
+          where: {
+            id: {
+              in: carIds,
+            },
+          },
+        });
+
+        // Connect the car IDs to the respective tables
+        const carConnections = existingCars.map((car) => ({ id: car.id }));
+        const popularCarConnections = existingPopularCars.map((car) => ({
+          id: car.id,
+        }));
+
+        // Create the order with the connected car IDs
+        await this.prisma.order.create({
+          data: {
+            id: cuid(),
+            userId,
+            statusId: 1,
+            total: response.data.amount,
+            cars: {
+              connect: carConnections,
+            },
+            popularCars: {
+              connect: popularCarConnections,
+            },
+          },
+        });
+      }
 
       return response;
     } catch (error) {
