@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import RentalSummary from "./widgets/RentalSummary";
 import BillingInfo from "./widgets/BillingInfo";
@@ -9,6 +9,7 @@ import PaymentMethod from "./widgets/PaymentMethod";
 import Confirmation from "./widgets/Confirmation";
 import Footer from "../../components/footer/index";
 import PaymentButton from "../../components/PaymentButton";
+import { addProduct, setReference } from "../../app/order_state";
 
 function PaymentPage() {
   const { carId } = useParams();
@@ -20,6 +21,8 @@ function PaymentPage() {
   });
   const rentalInfo = useSelector((state: any) => state.rentalInfo);
   const auth = useSelector((state: any) => state.auth);
+
+  const dispatch = useDispatch();
 
   const [billingInfo, setBillingInfo] = useState({
     name: "",
@@ -61,8 +64,6 @@ function PaymentPage() {
     !selectedPaymentMethod ||
     !privacyPolicyAccepted;
 
-  console.log(rentalInfo);
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const hasRentalInfo = Object.values(rentalInfo).some(
@@ -75,7 +76,7 @@ function PaymentPage() {
     if (selectedPaymentMethod === "Paystack") {
       try {
         const amount = allCars?.dailyPrice || popularCar?.dailyPrice || "0";
-        console.log(amount);
+        console.log(`${amount * 100}`, billingInfo.email);
 
         const response = await fetch(
           `http://localhost:3002/payment/initialize/${auth?.user.id}`,
@@ -83,6 +84,7 @@ function PaymentPage() {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${auth?.accessToken}`,
             },
             body: JSON.stringify({
               amount: `${amount * 100}`,
@@ -90,10 +92,13 @@ function PaymentPage() {
             }),
           }
         );
+        console.log(response);
 
         if (response.ok) {
           const data = await response.json();
-          console.log(data);
+          const productId: string = allCars?.id || popularCar?.id;
+          dispatch(setReference(data.data.reference));
+          dispatch(addProduct(productId));
           window.open(data.data.authorization_url, "_blank");
         } else {
           throw new Error("Failed to initialize the transaction");
