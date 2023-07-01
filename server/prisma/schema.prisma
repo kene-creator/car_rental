@@ -43,18 +43,18 @@ model Bookmark {
 
 model Car {
   id           String      @id @default(cuid())
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  thumbnailSrc  String?
-  name          String
-  gearType      String
-  gasTank       String
-  passenger     String
-  dailyPrice    String
-  monthlyPrice  String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  thumbnailSrc String?
+  name         String
+  gearType     String
+  gasTank      String
+  passenger    String
+  dailyPrice   String
+  monthlyPrice String
   discountPrice String?
-  vehicle       String
-  orders        Order[]  @relation("OrderCars")
+  vehicle      String
+  paymentRefs  Paystack_Payment_References[] @relation("PaymentRefCars")
 
   @@map("cars")
   @@schema("base")
@@ -73,7 +73,7 @@ model PopularCar {
   monthlyPrice  String
   discountPrice String?
   vehicle       String
-  orders        Order[]  @relation("OrderPopularCars")
+  paymentRefs   Paystack_Payment_References[] @relation("PaymentRefPopularCars")
 
   @@map("popular_cars")
   @@schema("base")
@@ -96,6 +96,8 @@ model Paystack_Payment_References {
   reference        String
   createdAt        DateTime @default(now())
   userId           String
+  cars             Car[]    @relation("PaymentRefCars")
+  popularCars      PopularCar[] @relation("PaymentRefPopularCars")
 
   @@map("paystack_payment_references")
   @@schema("transactional")
@@ -160,8 +162,6 @@ model Order {
   createdAt   DateTime     @default(now())
   status      OrderStatus  @relation(fields: [statusId], references: [id])
   user        User         @relation(fields: [userId], references: [id])
-  cars        Car[]        @relation("OrderCars")
-  popularCars PopularCar[] @relation("OrderPopularCars")
 
   @@map("order")
   @@schema("order")
