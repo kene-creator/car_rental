@@ -31,49 +31,9 @@ function Dashboard() {
     }
   }, [auth.accessToken]);
 
-  // const verifyPayment = useCallback(async () => {
-  //   try {
-  //     if (orderState.referenceCode && auth?.user?.id) {
-  //       const requestBody = {
-  //         cars: orderState.products.map((product: { id: string }) => ({
-  //           id: product.id,
-  //         })),
-  //       };
-  //       console.log("dto", JSON.stringify(requestBody.cars));
-
-  //       const response = await fetch(
-  //         `http://localhost:3002/payment/verify/${orderState.referenceCode}/${auth.user.id}`,
-  //         {
-  //           method: "POST",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: `Bearer ${auth.accessToken}`,
-  //           },
-  //           body: JSON.stringify(requestBody.cars),
-  //         }
-  //       );
-
-  //       const verificationData = await response.json();
-  //       console.log("Payment Verification:", verificationData);
-  //       // Handle the payment verification response as needed
-  //     }
-  //   } catch (error) {
-  //     console.error("Failed to verify payment:", error);
-  //   }
-  // }, [
-  //   orderState.referenceCode,
-  //   auth?.user?.id,
-  //   orderState.products,
-  //   auth.accessToken,
-  // ]);
-
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
-
-  // useEffect(() => {
-  //   verifyPayment();
-  // }, [verifyPayment]);
 
   const renderedUserInformation = useMemo(() => {
     if (user) {
