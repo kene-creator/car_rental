@@ -7,6 +7,8 @@ import GroupIcon from "@mui/icons-material/Group";
 import CarButton from "../CarButton";
 
 import { useNavigate } from "react-router-dom";
+import { addProduct, clearProducts } from "../../app/order_state";
+import { useDispatch } from "react-redux";
 
 interface ICarProps extends ICar {}
 
@@ -26,6 +28,7 @@ export default function Car(props: ICarProps) {
   } = props;
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   return (
     <div className="max-w-[17rem] min-h-[22rem] max-h-[22rem] flex flex-col items-center p-5 bg-white rounded-md main_font">
@@ -68,7 +71,15 @@ export default function Car(props: ICarProps) {
           </p>
         </div>
         <div>
-          <CarButton onClick={() => navigate(`/payment/${id}`)}>
+          <CarButton
+            onClick={() => {
+              dispatch(clearProducts());
+              if (id) {
+                dispatch(addProduct(id));
+                navigate(`/payment/${id}`);
+              }
+            }}
+          >
             Rent Now
           </CarButton>
         </div>
