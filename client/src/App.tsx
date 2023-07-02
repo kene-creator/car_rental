@@ -23,7 +23,6 @@ const AppContainer = styled.div`
 
 function App() {
   const auth = useSelector((state: any) => state.auth);
-  const payment = useSelector((state: any) => state.payment);
 
   return (
     <BrowserRouter>
