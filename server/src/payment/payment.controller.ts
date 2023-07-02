@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  HttpCode,
   HttpException,
   HttpStatus,
   Param,
@@ -13,16 +12,16 @@ import { JwtGuard } from 'src/auth/guard';
 import { CarDto, InitializeDto } from './dto';
 
 @Controller('payment')
-@UseGuards(JwtGuard)
 export class PaymentController {
   constructor(private readonly paystackService: PaymentService) {}
 
   @Post('initialize/:userId')
+  @UseGuards(JwtGuard)
   async initializeTransaction(
-    @Body() initializeDto: InitializeDto,
+    @Body() payload: { initializeDto: InitializeDto; cars: CarDto[] },
     @Param('userId') userId: string,
-    @Body() cars: CarDto[],
   ): Promise<any> {
+    const { initializeDto, cars } = payload;
     const transaction = await this.paystackService.initializeTransaction(
       initializeDto,
       userId,
@@ -54,8 +53,14 @@ export class PaymentController {
   // }
 
   @Post('verify')
-  @HttpCode(200)
-  async handleWebhook(@Body() payload: any): Promise<any> {
-    await this.paystackService.paystackWebhook(payload);
+  async handleWebhook(@Body() payload: any): Promise<void> {
+    try {
+      await this.paystackService.paystackWebhook(payload);
+    } catch (error) {
+      throw new HttpException(
+        'Failed to verify Paystack transaction',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }
