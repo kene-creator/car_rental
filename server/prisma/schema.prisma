@@ -42,28 +42,28 @@ model Bookmark {
 }
 
 model Car {
-  id           String      @id @default(cuid())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  thumbnailSrc String?
-  name         String
-  gearType     String
-  gasTank      String
-  passenger    String
-  dailyPrice   String
-  monthlyPrice String
+  id            String                        @id @default(cuid())
+  createdAt     DateTime                      @default(now())
+  updatedAt     DateTime                      @updatedAt
+  thumbnailSrc  String?
+  name          String
+  gearType      String
+  gasTank       String
+  passenger     String
+  dailyPrice    String
+  monthlyPrice  String
   discountPrice String?
-  vehicle      String
-  paymentRefs  Paystack_Payment_References[] @relation("PaymentRefCars")
+  vehicle       String
+  paymentRefs   Paystack_Payment_References[] @relation("PaymentRefCars")
 
   @@map("cars")
   @@schema("base")
 }
 
 model PopularCar {
-  id            String      @id @default(cuid())
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id            String                        @id @default(cuid())
+  createdAt     DateTime                      @default(now())
+  updatedAt     DateTime                      @updatedAt
   thumbnailSrc  String?
   name          String
   gearType      String
@@ -90,13 +90,13 @@ model UserCar {
 }
 
 model Paystack_Payment_References {
-  id               String   @id @default(cuid())
+  id               String       @id @default(cuid())
   authorizationUrl String
   accessCode       String
   reference        String
-  createdAt        DateTime @default(now())
+  createdAt        DateTime     @default(now())
   userId           String
-  cars             Car[]    @relation("PaymentRefCars")
+  cars             Car[]        @relation("PaymentRefCars")
   popularCars      PopularCar[] @relation("PaymentRefPopularCars")
 
   @@map("paystack_payment_references")
@@ -115,12 +115,12 @@ model Paystack_Transaction_Verification {
   channel            String
   currency           String
   ip_address         String
-  attempts           Int
-  success_status     Boolean
+  attempts           Int?
+  success_status     Boolean?
   authorization_code String
   card_type          String
   signature          String
-  mobile             Boolean
+  mobile             Boolean?
   first_name         String?
   last_name          String?
   email              String
@@ -155,13 +155,13 @@ model OrderStatus {
 }
 
 model Order {
-  id          String       @id @default(cuid())
-  userId      String
-  statusId    Int
-  total       Float
-  createdAt   DateTime     @default(now())
-  status      OrderStatus  @relation(fields: [statusId], references: [id])
-  user        User         @relation(fields: [userId], references: [id])
+  id        String      @id @default(cuid())
+  userId    String
+  statusId  Int
+  total     Int
+  createdAt DateTime    @default(now())
+  status    OrderStatus @relation(fields: [statusId], references: [id])
+  user      User        @relation(fields: [userId], references: [id])
 
   @@map("order")
   @@schema("order")
