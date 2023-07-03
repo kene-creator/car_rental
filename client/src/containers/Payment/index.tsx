@@ -22,8 +22,6 @@ function PaymentPage() {
   const auth = useSelector((state: any) => state.auth);
   const order = useSelector((state: any) => state.order);
 
-  console.log(order.products);
-
   const [billingInfo, setBillingInfo] = useState({
     name: "",
     phoneNumber: "",
@@ -80,7 +78,7 @@ function PaymentPage() {
         const payload = {
           initializeDto: {
             amount: `${amount * 100}`,
-            email: billingInfo.email,
+            email: auth.user.email,
           },
           cars: order.products,
         };
