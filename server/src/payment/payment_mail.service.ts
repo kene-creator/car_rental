@@ -135,13 +135,13 @@ export class PaymentMailService {
             <li>
               <img src="${product.thumbnailSrc}" alt="Product Thumbnail" />
               <p><strong>Name:</strong> ${product.name}</p>
-              <p><strong>Price:</strong> ${product.monthlyPrice}</p>
+              <p><strong>Price:</strong> ${product.dailyPrice}</p>
             </li>
           `,
           )
           .join('')}
       </ul>
-      <h4>Total: ${total}</h4>
+      <h4>Total: ${total / 100}</h4>
       <div class="footer">
         <p class="contact-details">
           Contact us: <strong>Lorem Ipsum</strong> | 123 Main Street, Lorem City |
@@ -163,7 +163,7 @@ export class PaymentMailService {
 
   async getProductDetails(
     productId: string,
-  ): Promise<{ thumbnailSrc: string; name: string; monthlyPrice: string }> {
+  ): Promise<{ thumbnailSrc: string; name: string; dailyPrice: string }> {
     const car = await this.prisma.car.findUnique({
       where: {
         id: productId,
@@ -171,7 +171,7 @@ export class PaymentMailService {
       select: {
         thumbnailSrc: true,
         name: true,
-        monthlyPrice: true,
+        dailyPrice: true,
       },
     });
 
@@ -182,7 +182,7 @@ export class PaymentMailService {
       select: {
         thumbnailSrc: true,
         name: true,
-        monthlyPrice: true,
+        dailyPrice: true,
       },
     });
 
