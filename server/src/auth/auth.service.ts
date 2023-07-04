@@ -2,6 +2,7 @@ import {
   Injectable,
   ForbiddenException,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthDto, CreateUserDto } from './dto';
@@ -17,7 +18,7 @@ import { User } from '@prisma/client';
 export class AuthService {
   constructor(
     private prisma: PrismaService,
-    private jwt: JwtService,
+    private jwtService: JwtService,
     private mailService: MailService,
   ) {}
 
@@ -102,7 +103,7 @@ export class AuthService {
   ): Promise<{ access_token: string }> {
     const payload = { sub: userId, email };
 
-    const token = await this.jwt.signAsync(payload, {
+    const token = await this.jwtService.signAsync(payload, {
       expiresIn: process.env.JWT_EXPIRATION_TIME,
       secret: process.env.JWT_SECRET,
     });
@@ -156,6 +157,22 @@ export class AuthService {
 
       // Handle other errors
       throw error;
+    }
+  }
+
+  async verifyJwt(jwt: string): Promise<{ user: User; exp: number }> {
+    if (!jwt) {
+      throw new UnauthorizedException('No token provided');
+    }
+
+    try {
+      const decoded = await this.jwtService.verifyAsync(jwt, {
+        secret: process.env.JWT_SECRET,
+      });
+      const { user, exp } = decoded;
+      return { user, exp };
+    } catch (error) {
+      throw new UnauthorizedException('Invalid token for verify');
     }
   }
 }
