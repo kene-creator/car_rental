@@ -4,22 +4,23 @@ import {
   HttpException,
   HttpStatus,
   Param,
+  ParseUUIDPipe,
   Post,
   UseGuards,
 } from '@nestjs/common';
 import { PaymentService } from './payment.service';
-import { JwtGuard } from 'src/auth/guard';
 import { CarDto, InitializeDto } from './dto';
+import { AuthGuard } from '../auth/guard/auth.guard';
 
 @Controller('payment')
 export class PaymentController {
   constructor(private readonly paystackService: PaymentService) {}
 
   @Post('initialize/:userId')
-  @UseGuards(JwtGuard)
+  @UseGuards(AuthGuard)
   async initializeTransaction(
     @Body() payload: { initializeDto: InitializeDto; cars: CarDto[] },
-    @Param('userId') userId: string,
+    @Param('userId', new ParseUUIDPipe()) userId: string,
   ): Promise<any> {
     const { initializeDto, cars } = payload;
     const transaction = await this.paystackService.initializeTransaction(
@@ -30,27 +31,6 @@ export class PaymentController {
 
     return transaction;
   }
-
-  // @Post('/:reference/:userId')
-  // async verifyTransaction(
-  //   @Param('reference') reference: string,
-  //   @Param('userId') userId: string,
-  //   @Body() cars: CarDto[],
-  // ): Promise<any> {
-  //   try {
-  //     const transaction = await this.paystackService.verifyTransaction(
-  //       reference,
-  //       userId,
-  //       cars,
-  //     );
-  //     return transaction;
-  //   } catch (error) {
-  //     throw new HttpException(
-  //       'Failed to verify Paystack transaction',
-  //       HttpStatus.INTERNAL_SERVER_ERROR,
-  //     );
-  //   }
-  // }
 
   @Post('verify')
   async handleWebhook(@Body() payload: any): Promise<void> {

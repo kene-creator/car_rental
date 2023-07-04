@@ -5,7 +5,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategy';
 import { MailService } from './mail.service';
 import { AuthGuard } from './guard/auth.guard';
-import { UserInterceptor } from './interceptors/jwt.interceptor';
+import { UserInterceptor } from './interceptors/user.interceptor';
 
 @Module({
   imports: [
