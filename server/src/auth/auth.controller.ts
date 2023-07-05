@@ -1,6 +1,16 @@
-import { Controller, Post, Body, Param, Get } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Param,
+  Get,
+  Req,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto, CreateUserDto } from './dto';
+import { UserInterceptor } from './interceptors/user.interceptor';
+import { UserRequest } from './interface/user-request.interface';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -38,5 +48,12 @@ export class AuthController {
     } catch (error) {
       return { message: error.message, valid: false };
     }
+  }
+
+  @Post('logout')
+  @UseInterceptors(UserInterceptor)
+  async logout(@Req() req: UserRequest) {
+    delete req.user;
+    return { message: 'Logout successful' };
   }
 }
