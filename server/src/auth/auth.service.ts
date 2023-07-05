@@ -13,6 +13,7 @@ import { JwtService } from '@nestjs/jwt';
 import { v4 as uuidv4 } from 'uuid';
 import { MailService } from './mail.service';
 import { User } from '@prisma/client';
+import { ResetPasswordDto } from './dto/reset_password.dto';
 
 @Injectable()
 export class AuthService {
@@ -174,5 +175,61 @@ export class AuthService {
     } catch (error) {
       throw new UnauthorizedException('Invalid token for verify');
     }
+  }
+
+  async resetPassword(dto: ResetPasswordDto): Promise<void> {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email: dto.email,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const resetToken = this.generateVerificationToken();
+    const resetTokenExpiration = new Date();
+    resetTokenExpiration.setHours(resetTokenExpiration.getHours() + 1);
+
+    await this.prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        resetToken,
+        resetTokenExpiresAt: resetTokenExpiration,
+      },
+    });
+
+    await this.mailService.sendPasswordResetEmail(user.email, resetToken);
+  }
+
+  async updatePassword(token: string, newPassword: string): Promise<void> {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        resetToken: token,
+        resetTokenExpiresAt: {
+          gte: new Date(),
+        },
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const hashedPassword = await argon.hash(newPassword);
+
+    await this.prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        hash: hashedPassword,
+        resetToken: null,
+        resetTokenExpiresAt: null,
+      },
+    });
   }
 }
