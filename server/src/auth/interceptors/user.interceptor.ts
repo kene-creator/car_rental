@@ -46,6 +46,19 @@ export class UserInterceptor implements NestInterceptor {
         where: {
           id: decoded.sub,
         },
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          email: true,
+          createdAt: true,
+          updatedAt: true,
+          emailToken: true,
+          emailvalid: true,
+          Bookmarks: true,
+          cars: true,
+          orders: true,
+        },
       });
 
       // Attach user to request object
