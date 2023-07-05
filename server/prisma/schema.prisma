@@ -16,6 +16,8 @@ model User {
   email      String     @unique
   hash       String
   emailToken String?    @unique
+  resetToken String?
+  resetTokenExpiresAt DateTime?
   emailvalid Boolean?   @default(false)
   firstName  String?
   lastName   String?
