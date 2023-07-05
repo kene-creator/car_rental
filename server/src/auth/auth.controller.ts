@@ -8,7 +8,12 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthDto, CreateUserDto } from './dto';
+import {
+  AuthDto,
+  CreateUserDto,
+  UpdatePasswordDto,
+  ResetPasswordDto,
+} from './dto';
 import { UserInterceptor } from './interceptors/user.interceptor';
 import { UserRequest } from './interface/user-request.interface';
 @Controller('auth')
@@ -55,5 +60,22 @@ export class AuthController {
   async logout(@Req() req: UserRequest) {
     delete req.user;
     return { message: 'Logout successful' };
+  }
+
+  @Post('reset-password')
+  async resetPassword(
+    @Body() dto: ResetPasswordDto,
+  ): Promise<{ message: string }> {
+    await this.authService.resetPassword(dto);
+    return { message: 'Password reset request sent' };
+  }
+
+  @Post('update-password/:token')
+  async updatePassword(
+    @Param('token') token: string,
+    @Body() dto: UpdatePasswordDto,
+  ): Promise<{ message: string }> {
+    await this.authService.updatePassword(token, dto.password);
+    return { message: 'Password update successful' };
   }
 }
