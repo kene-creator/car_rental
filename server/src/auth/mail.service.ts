@@ -36,4 +36,20 @@ export class MailService {
 
     await this.transporter.sendMail(mailOptions);
   }
+
+  async sendPasswordResetEmail(to: string, resetToken: string): Promise<void> {
+    const resetLink = `http://localhost:3000/reset-password/${resetToken}`;
+
+    const mailOptions: nodemailer.SendMailOptions = {
+      from: 'kayyungx@gmail.com',
+      to,
+      subject: 'Password Reset',
+      html: `
+        <p>We received a request to reset your password. Click the following link to reset your password:</p>
+        <a href="${resetLink}">Reset Password</a>
+      `,
+    };
+
+    await this.transporter.sendMail(mailOptions);
+  }
 }
