@@ -6,6 +6,8 @@ import { JwtStrategy } from './strategy';
 import { MailService } from './mail.service';
 import { AuthGuard } from './guard/auth.guard';
 import { UserInterceptor } from './interceptors/user.interceptor';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { TimeoutInterceptor } from '@app/shared/interceptors/timeout.interceptors';
 
 @Module({
   imports: [
@@ -18,6 +20,13 @@ import { UserInterceptor } from './interceptors/user.interceptor';
   ],
   controllers: [AuthController],
   providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useFactory: () => {
+        const timeoutValue = 6000;
+        return new TimeoutInterceptor(timeoutValue);
+      },
+    },
     AuthService,
     JwtStrategy,
     MailService,
