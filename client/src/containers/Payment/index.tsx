@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import { Snackbar } from "@mui/material";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+
 import RentalSummary from "./widgets/RentalSummary";
 import BillingInfo from "./widgets/BillingInfo";
 import Navbar from "../../components/Navbar";
@@ -9,6 +12,13 @@ import PaymentMethod from "./widgets/PaymentMethod";
 import Confirmation from "./widgets/Confirmation";
 import Footer from "../../components/footer/index";
 import PaymentButton from "../../components/PaymentButton";
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 function PaymentPage() {
   const { carId } = useParams();
@@ -21,6 +31,8 @@ function PaymentPage() {
   const rentalInfo = useSelector((state: any) => state.rentalInfo);
   const auth = useSelector((state: any) => state.auth);
   const order = useSelector((state: any) => state.order);
+
+  const navigate = useNavigate();
 
   const [billingInfo, setBillingInfo] = useState({
     name: "",
@@ -36,6 +48,8 @@ function PaymentPage() {
   const [privacyPolicyAccepted, setPrivacyPolicyAccepted] = useState(false);
 
   const [rentalInfoState, setRentalInfoState] = useState<boolean>(false);
+
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
 
   const handleNewsletterConfirmation = () => {
     setNewsletterConfirmed(!newsletterConfirmed);
@@ -78,13 +92,13 @@ function PaymentPage() {
         const payload = {
           initializeDto: {
             amount: `${amount * 100}`,
-            email: auth.user.email,
+            email: auth.user?.email,
           },
           cars: order.products,
         };
 
         const response = await fetch(
-          `http://localhost:3002/payment/initialize/${auth?.user.id}`,
+          `http://localhost:3002/payment/initialize/${auth.user?.id}`,
           {
             method: "POST",
             headers: {
@@ -100,6 +114,12 @@ function PaymentPage() {
           const data = await response.json();
 
           window.open(data.data.authorization_url, "_blank");
+        } else if (response.statusText === "Unauthorized") {
+          setOpenAlert(true);
+          setTimeout(() => {
+            setOpenAlert(false);
+            navigate("/login");
+          }, 3000);
         } else {
           throw new Error("Failed to initialize the transaction");
         }
@@ -112,6 +132,16 @@ function PaymentPage() {
   return (
     <>
       <Navbar />
+      <Snackbar
+        open={openAlert}
+        autoHideDuration={3000}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert severity="error" sx={{ width: "100%" }}>
+          Please login to continue
+        </Alert>
+      </Snackbar>
+
       <div className="bg-[#F6F7F9] w-full">
         <div className="flex flex-col-reverse lg:flex-row gap-6 justify-center p-8">
           <form
