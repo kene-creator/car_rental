@@ -10,7 +10,6 @@ import { UserInterceptor } from '../auth/interceptors/user.interceptor';
 export class UserController {
   @Get('user')
   getUser(@GetUser() user: User, @GetUser('email') email: string) {
-    console.log({ email });
     return user;
   }
 }
