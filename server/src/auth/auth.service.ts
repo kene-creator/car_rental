@@ -12,8 +12,9 @@ import { randomBytes } from 'crypto';
 import { JwtService } from '@nestjs/jwt';
 import { v4 as uuidv4 } from 'uuid';
 import { MailService } from './mail.service';
-import { User } from '@prisma/client';
+import { User, UserRole } from '@prisma/client';
 import { ResetPasswordDto } from './dto/reset_password.dto';
+import { Role } from './enums/roles.enums';
 
 @Injectable()
 export class AuthService {
@@ -32,6 +33,10 @@ export class AuthService {
 
       const verificationToken = this.generateVerificationToken();
 
+      const userRoles: UserRole[] = dto.roles.map(
+        (role: Role) => role.toUpperCase() as UserRole,
+      );
+
       //* create the user in th db
       const user = await this.prisma.user.create({
         data: {
@@ -41,6 +46,7 @@ export class AuthService {
           firstName: dto.firstName,
           lastName: dto.lastName,
           emailToken: verificationToken,
+          roles: userRoles,
         },
       });
 
