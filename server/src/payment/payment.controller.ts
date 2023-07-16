@@ -11,13 +11,17 @@ import {
 import { PaymentService } from './payment.service';
 import { CarDto, InitializeDto } from './dto';
 import { AuthGuard } from '../auth/guard/auth.guard';
+import { RolesGuard } from 'src/auth/guard/roles.guard';
+import { Roles } from '../auth/decorator/roles.decorator';
+import { Role } from 'src/auth/enums/roles.enums';
 
 @Controller('payment')
 export class PaymentController {
   constructor(private readonly paystackService: PaymentService) {}
 
   @Post('initialize/:userId')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.USER)
   async initializeTransaction(
     @Body() payload: { initializeDto: InitializeDto; cars: CarDto[] },
     @Param('userId', new ParseUUIDPipe()) userId: string,
