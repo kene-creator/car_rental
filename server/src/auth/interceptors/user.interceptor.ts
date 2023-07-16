@@ -57,6 +57,7 @@ export class UserInterceptor implements NestInterceptor {
           emailvalid: true,
           Bookmarks: true,
           cars: true,
+          roles: true,
           orders: true,
         },
       });
