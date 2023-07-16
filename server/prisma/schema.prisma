@@ -10,20 +10,21 @@ datasource db {
 }
 
 model User {
-  id         String     @id @default(uuid())
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  email      String     @unique
-  hash       String
-  emailToken String?    @unique
-  resetToken String?
+  id                  String     @id @default(uuid())
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+  email               String     @unique
+  hash                String
+  emailToken          String?    @unique
+  resetToken          String?
   resetTokenExpiresAt DateTime?
-  emailvalid Boolean?   @default(false)
-  firstName  String?
-  lastName   String?
-  Bookmarks  Bookmark[]
-  cars       UserCar[]
-  orders     Order[]
+  emailvalid          Boolean?   @default(false)
+  firstName           String?
+  lastName            String?
+  roles               UserRole[]  @default([USER])
+  Bookmarks           Bookmark[]
+  cars                UserCar[]
+  orders              Order[]
 
   @@map("users")
   @@schema("base")
@@ -167,4 +168,12 @@ model Order {
 
   @@map("order")
   @@schema("order")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  MODERATOR
+
+  @@schema("base")
 }
