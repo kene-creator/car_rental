@@ -9,7 +9,7 @@ import { UserInterceptor } from '../auth/interceptors/user.interceptor';
 @Controller('users')
 export class UserController {
   @Get('user')
-  getUser(@GetUser() user: User, @GetUser('email') email: string) {
+  getUser(@GetUser() user: User) {
     return user;
   }
 }
