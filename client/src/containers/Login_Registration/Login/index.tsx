@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { loginSuccess } from "../../../app/auth_state";
 
 import video from "../../../assets/videos/Untitled.mp4";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 interface FormValues {
   email: string;
@@ -17,10 +17,6 @@ interface FormValues {
 const LoginPage: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const auth = useSelector((state: any) => state.auth);
-
-  console.log(auth);
 
   const [loading, setIsLoading] = React.useState<boolean>(false);
 
@@ -56,12 +52,9 @@ const LoginPage: React.FC = () => {
         setIsLoading(false);
         navigate("/dashboard");
       } else {
-        // Login failed, handle the error
-        console.log("Login failed");
         setIsLoading(false);
       }
     } catch (error) {
-      // Handle any network or server errors
       console.error("An error occurred:", error);
     }
   };

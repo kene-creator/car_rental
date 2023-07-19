@@ -108,7 +108,6 @@ function PaymentPage() {
             body: JSON.stringify(payload),
           }
         );
-        console.log(response);
 
         if (response.ok) {
           const data = await response.json();

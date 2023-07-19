@@ -58,7 +58,6 @@ const PickDrop = () => {
   const handleCountryChange = (country: string): void => {
     setSelectedCountry(country);
   };
-  console.log(selectedCountry);
 
   return (
     <div className="relative flex flex-col justify-center items-center w-full main_font gap-6 lg:mt-[-8rem] mt-[-4rem] z-0">

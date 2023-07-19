@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { TextField, Button, CircularProgress } from "@mui/material";
 import { ArrowForward } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
 import { setRegistrationAccessToken } from "../../../app/auth_state";
 
 import video from "../../../assets/videos/Untitled.mp4";
@@ -17,15 +17,12 @@ interface FormValues {
 }
 
 const RegistrationPage: React.FC = () => {
-  const auth = useSelector((state: any) => state.auth);
 
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
   const [loading, setIsLoading] = React.useState<boolean>(false);
-
-  console.log(auth);
 
   const initialValues: FormValues = {
     firstName: "",
@@ -65,14 +62,10 @@ const RegistrationPage: React.FC = () => {
         dispatch(setRegistrationAccessToken(data));
         navigate("/check_email");
         setIsLoading(false);
-        console.log(data);
       } else {
-        // Registration failed, handle the error
-        console.log("Registration failed");
         setIsLoading(false);
       }
     } catch (error) {
-      // Handle any network or server errors
       console.error("An error occurred:", error);
     }
   };

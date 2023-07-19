@@ -15,8 +15,6 @@ function Dashboard() {
   const auth = useSelector((state: any) => state.auth);
   const orderState = useSelector((state: any) => state.order);
 
-  console.log(orderState);
-
   const fetchUser = useCallback(async () => {
     try {
       const response = await fetch("http://localhost:3002/users/user", {
