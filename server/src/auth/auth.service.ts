@@ -12,9 +12,9 @@ import { randomBytes } from 'crypto';
 import { JwtService } from '@nestjs/jwt';
 import { v4 as uuidv4 } from 'uuid';
 import { MailService } from './mail.service';
-import { User, UserRole } from '@prisma/client';
 import { ResetPasswordDto } from './dto/reset_password.dto';
 import { Role } from './enums/roles.enums';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -26,37 +26,29 @@ export class AuthService {
 
   async signup(
     dto: CreateUserDto,
+    roles: Role[],
   ): Promise<{ access_token: string; verification_token: string }> {
+    let transaction;
+
+    const verificationToken = this.generateVerificationToken();
     try {
-      //* generate the password hash
       const hash = await argon.hash(dto.password);
 
-      const verificationToken = this.generateVerificationToken();
+      transaction = await this.prisma.$transaction([
+        this.prisma.user.create({
+          data: {
+            id: uuidv4(),
+            email: dto.email,
+            hash,
+            firstName: dto.firstName,
+            lastName: dto.lastName,
+            emailToken: verificationToken,
+            roles,
+          },
+        }),
+      ]);
 
-      const userRoles: UserRole[] = dto.roles.map(
-        (role: Role) => role.toUpperCase() as UserRole,
-      );
-
-      //* create the user in th db
-      const user = await this.prisma.user.create({
-        data: {
-          id: uuidv4(),
-          email: dto.email,
-          hash,
-          firstName: dto.firstName,
-          lastName: dto.lastName,
-          emailToken: verificationToken,
-          roles: userRoles,
-        },
-      });
-
-      //* return the user
-      // Implement a function to generate a verification token
-      await this.mailService.sendVerificationEmail(
-        user.email,
-        verificationToken,
-      );
-
+      const user = transaction[0];
       const token = await this.signToken(user.id, user.email);
 
       delete user.hash;
@@ -66,6 +58,9 @@ export class AuthService {
         verification_token: verificationToken,
       };
     } catch (err) {
+      // if (err) {
+      //   await this.prisma.$queryRaw`ROLLBACK`;
+      // }
       if (err instanceof PrismaClientKnownRequestError) {
         if (err.code === 'P2002') {
           //* handle the error
@@ -73,26 +68,33 @@ export class AuthService {
         }
       }
       throw err;
+    } finally {
+      try {
+        if (transaction) {
+          await this.mailService.sendVerificationEmail(
+            dto.email,
+            verificationToken,
+          );
+        }
+      } catch (err) {
+        console.error('Error sending verification email:', err);
+      }
     }
   }
 
   async signin(dto: AuthDto): Promise<{ access_token: string; user: User }> {
-    //find the user in the db
     const user = await this.prisma.user.findUnique({
       where: {
         email: dto.email,
       },
     });
 
-    // if no user throw an error
     if (!user) {
       throw new ForbiddenException('Email or password is wrong');
     }
 
-    //compare the password
     const isPasswordCorrect = await argon.verify(user.hash, dto.password);
 
-    //if the password is wrong throw an error
     if (!isPasswordCorrect) {
       throw new ForbiddenException('Email or password is wrong');
     }
