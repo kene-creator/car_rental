@@ -16,13 +16,19 @@ import {
 } from './dto';
 import { UserInterceptor } from './interceptors/user.interceptor';
 import { UserRequest } from './interface/user-request.interface';
+import { Role } from './enums/roles.enums';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('signup')
   signup(@Body() dto: CreateUserDto) {
-    return this.authService.signup(dto);
+    return this.authService.signup(dto, [Role.USER]);
+  }
+
+  @Post('signup/admin')
+  signupAdmin(@Body() dto: CreateUserDto) {
+    return this.authService.signup(dto, [Role.ADMIN]);
   }
 
   @Post('signin')
