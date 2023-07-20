@@ -53,7 +53,6 @@ const RegistrationPage: React.FC = () => {
           lastName: values.lastName,
           email: values.email,
           password: values.password,
-          roles: ["USER"],
         }),
       });
 
