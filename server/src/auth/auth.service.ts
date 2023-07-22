@@ -58,9 +58,9 @@ export class AuthService {
         verification_token: verificationToken,
       };
     } catch (err) {
-      // if (err) {
-      //   await this.prisma.$queryRaw`ROLLBACK`;
-      // }
+      if (err) {
+        await this.prisma.$queryRaw`ROLLBACK`;
+      }
       if (err instanceof PrismaClientKnownRequestError) {
         if (err.code === 'P2002') {
           //* handle the error
@@ -70,12 +70,13 @@ export class AuthService {
       throw err;
     } finally {
       try {
-        if (transaction) {
-          await this.mailService.sendVerificationEmail(
-            dto.email,
-            verificationToken,
-          );
-        }
+        // if (transaction) {
+        //   await this.mailService.sendVerificationEmail(
+        //     dto.email,
+        //     verificationToken,
+        //   );
+        // }
+        console.log('sent mail');
       } catch (err) {
         console.error('Error sending verification email:', err);
       }
@@ -123,12 +124,10 @@ export class AuthService {
   }
 
   generateVerificationToken(): string {
-    const tokenLength = 32; // Specify the desired length of the token
+    const tokenLength = 32;
 
-    // Generate a random string of bytes
     const randomBytesBuffer = randomBytes(tokenLength);
 
-    // Convert the random bytes to a hexadecimal string
     const token = randomBytesBuffer.toString('hex');
 
     return token;
@@ -163,8 +162,6 @@ export class AuthService {
           throw new NotFoundException('User not found');
         }
       }
-
-      // Handle other errors
       throw error;
     }
   }
