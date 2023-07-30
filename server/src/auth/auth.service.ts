@@ -15,6 +15,7 @@ import { MailService } from './mail.service';
 import { ResetPasswordDto } from './dto/reset_password.dto';
 import { Role } from './enums/roles.enums';
 import { User } from '@prisma/client';
+import { TooManyFailedAttemptsException } from '@app/shared/exceptions/tooManyFailedAttempts.exception';
 
 @Injectable()
 export class AuthService {
@@ -58,7 +59,7 @@ export class AuthService {
         verification_token: verificationToken,
       };
     } catch (err) {
-      if (err) {
+      if (!transaction) {
         await this.prisma.$queryRaw`ROLLBACK`;
       }
       if (err instanceof PrismaClientKnownRequestError) {
@@ -97,8 +98,30 @@ export class AuthService {
     const isPasswordCorrect = await argon.verify(user.hash, dto.password);
 
     if (!isPasswordCorrect) {
+      user.failedSignInAttempts = (user.failedSignInAttempts || 0) + 1;
+      await this.prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          failedSignInAttempts: user.failedSignInAttempts,
+        },
+      });
+      if (user.failedSignInAttempts >= 3) {
+        throw new TooManyFailedAttemptsException();
+      }
       throw new ForbiddenException('Email or password is wrong');
     }
+
+    // If sign-in succeeds, reset the failed sign-in attempts counter to 0
+    await this.prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        failedSignInAttempts: 0,
+      },
+    });
 
     const token = await this.signToken(user.id, user.email);
 
