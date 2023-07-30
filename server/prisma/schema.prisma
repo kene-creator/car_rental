@@ -21,6 +21,7 @@ model User {
   emailvalid          Boolean?   @default(false)
   firstName           String?
   lastName            String?
+  failedSignInAttempts Int        @default(0)
   roles               UserRole[]  @default([USER])
   Bookmarks           Bookmark[]
   cars                UserCar[]
