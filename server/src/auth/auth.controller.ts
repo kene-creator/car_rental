@@ -17,22 +17,31 @@ import {
 import { UserInterceptor } from './interceptors/user.interceptor';
 import { UserRequest } from './interface/user-request.interface';
 import { Role } from './enums/roles.enums';
+import { User } from '@prisma/client';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('signup')
-  signup(@Body() dto: CreateUserDto) {
+  signup(
+    @Body() dto: CreateUserDto,
+  ): Promise<{ access_token: string; verification_token: string }> {
     return this.authService.signup(dto, [Role.USER]);
   }
 
   @Post('signup/admin')
-  signupAdmin(@Body() dto: CreateUserDto) {
-    return this.authService.signup(dto, [Role.ADMIN]);
+  async signupAdmin(
+    @Body() dto: CreateUserDto,
+  ): Promise<{ access_token: string; verification_token: string }> {
+    try {
+      return await this.authService.signup(dto, [Role.ADMIN]);
+    } catch (error) {
+      throw error;
+    }
   }
 
   @Post('signin')
-  signin(@Body() dto: AuthDto) {
+  signin(@Body() dto: AuthDto): Promise<{ access_token: string; user: User }> {
     return this.authService.signin(dto);
   }
 
@@ -63,7 +72,7 @@ export class AuthController {
 
   @Post('logout')
   @UseInterceptors(UserInterceptor)
-  async logout(@Req() req: UserRequest) {
+  async logout(@Req() req: UserRequest): Promise<{ message: string }> {
     delete req.user;
     return { message: 'Logout successful' };
   }
