@@ -23,7 +23,7 @@ import { TimeoutInterceptor } from '@app/shared/interceptors/timeout.interceptor
     {
       provide: APP_INTERCEPTOR,
       useFactory: () => {
-        const timeoutValue = 6000;
+        const timeoutValue = 30000;
         return new TimeoutInterceptor(timeoutValue);
       },
     },
