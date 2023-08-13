@@ -31,7 +31,7 @@ export class AuthService {
   ): Promise<{ access_token: string; verification_token: string }> {
     let transaction;
 
-    const verificationToken = this.generateVerificationToken();
+    const verificationToken: string = this.generateVerificationToken();
     try {
       const hash = await argon.hash(dto.password);
 
