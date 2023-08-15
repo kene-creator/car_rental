@@ -18,6 +18,8 @@ import { UserInterceptor } from './interceptors/user.interceptor';
 import { UserRequest } from './interface/user-request.interface';
 import { Role } from './enums/roles.enums';
 import { User } from '@prisma/client';
+import { ApiResponse } from '@nestjs/swagger';
+import { SignInResponse } from './dto/signIn_Response.dto';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -41,6 +43,11 @@ export class AuthController {
   }
 
   @Post('signin')
+  @ApiResponse({
+    status: 200,
+    description: 'User signed in successfully',
+    type: SignInResponse,
+  })
   signin(@Body() dto: AuthDto): Promise<{ access_token: string; user: User }> {
     return this.authService.signin(dto);
   }
