@@ -25,7 +25,7 @@ export class AuthService {
     private mailService: MailService,
   ) {}
 
-  async signup(
+  public async signup(
     dto: CreateUserDto,
     roles: Role[],
   ): Promise<{ access_token: string; verification_token: string }> {
