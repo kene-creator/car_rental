@@ -14,12 +14,14 @@ import { AuthGuard } from '../auth/guard/auth.guard';
 import { RolesGuard } from 'src/auth/guard/roles.guard';
 import { Roles } from '../auth/decorator/roles.decorator';
 import { Role } from 'src/auth/enums/roles.enums';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('payment')
 export class PaymentController {
   constructor(private readonly paystackService: PaymentService) {}
 
   @Post('initialize/:userId')
+  @ApiBearerAuth()
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.USER)
   async initializeTransaction(
