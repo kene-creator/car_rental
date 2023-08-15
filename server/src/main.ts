@@ -16,6 +16,12 @@ async function bootstrap() {
     .setTitle('Car Rental Application')
     .setDescription('A car rental application API')
     .setVersion('1.0')
+    .addBearerAuth()
+    .addSecurity('Bearer', {
+      type: 'apiKey',
+      in: 'header',
+      name: 'Authorization',
+    })
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
