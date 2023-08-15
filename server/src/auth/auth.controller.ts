@@ -19,7 +19,13 @@ import { UserRequest } from './interface/user-request.interface';
 import { Role } from './enums/roles.enums';
 import { User } from '@prisma/client';
 import { ApiResponse } from '@nestjs/swagger';
-import { SignInResponse } from './dto/signIn_Response.dto';
+import {
+  LogoutResponse,
+  ResetPasswordResponse,
+  UpdatePasswordResponse,
+  VerifyEmailResponse,
+  SignInResponse,
+} from './api_response';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -53,6 +59,11 @@ export class AuthController {
   }
 
   @Get('email/verify/:token')
+  @ApiResponse({
+    status: 200,
+    description: 'Email verification successful',
+    type: VerifyEmailResponse,
+  })
   async verifyEmail(
     @Param('token') token: string,
   ): Promise<{ message: string; valid: boolean }> {
@@ -79,12 +90,22 @@ export class AuthController {
 
   @Post('logout')
   @UseInterceptors(UserInterceptor)
+  @ApiResponse({
+    status: 200,
+    description: 'Logout successful',
+    type: LogoutResponse,
+  })
   async logout(@Req() req: UserRequest): Promise<{ message: string }> {
     delete req.user;
     return { message: 'Logout successful' };
   }
 
   @Post('reset-password')
+  @ApiResponse({
+    status: 200,
+    description: 'Password reset request sent',
+    type: ResetPasswordResponse,
+  })
   async resetPassword(
     @Body() dto: ResetPasswordDto,
   ): Promise<{ message: string }> {
@@ -93,6 +114,11 @@ export class AuthController {
   }
 
   @Post('update-password/:token')
+  @ApiResponse({
+    status: 200,
+    description: 'Password update successful',
+    type: UpdatePasswordResponse,
+  })
   async updatePassword(
     @Param('token') token: string,
     @Body() dto: UpdatePasswordDto,
