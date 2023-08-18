@@ -25,12 +25,19 @@ import {
   UpdatePasswordResponse,
   VerifyEmailResponse,
   SignInResponse,
+  SignupAdminResponse,
+  SignupResponse,
 } from './api_response';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('signup')
+  @ApiResponse({
+    status: 201,
+    description: 'User sign up successfull',
+    type: SignupResponse,
+  })
   signup(
     @Body() dto: CreateUserDto,
   ): Promise<{ access_token: string; verification_token: string }> {
@@ -38,6 +45,11 @@ export class AuthController {
   }
 
   @Post('signup/admin')
+  @ApiResponse({
+    status: 201,
+    description: 'User sign up successfull',
+    type: SignupAdminResponse,
+  })
   async signupAdmin(
     @Body() dto: CreateUserDto,
   ): Promise<{ access_token: string; verification_token: string }> {
