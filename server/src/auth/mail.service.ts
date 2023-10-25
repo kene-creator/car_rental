@@ -25,7 +25,7 @@ export class MailService {
     const verificationLink = `http://localhost:3000/verify/email/${verificationToken}`;
 
     const mailOptions: nodemailer.SendMailOptions = {
-      from: 'kayyungx@gmail.com',
+      from: 'c.nnadika@abbeymortgagebank.com',
       to,
       subject: 'Account Verification',
       html: `

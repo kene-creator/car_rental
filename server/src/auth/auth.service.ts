@@ -12,7 +12,7 @@ import { randomBytes } from 'crypto';
 import { JwtService } from '@nestjs/jwt';
 import { v4 as uuidv4 } from 'uuid';
 import { MailService } from './mail.service';
-import { ResetPasswordDto } from './dto/reset_password.dto';
+import { ResetPasswordDto } from './dto';
 import { Role } from './enums/roles.enums';
 import { User } from '@prisma/client';
 import { TooManyFailedAttemptsException } from '@app/shared/exceptions/tooManyFailedAttempts.exception';
@@ -33,7 +33,7 @@ export class AuthService {
 
     const verificationToken: string = this.generateVerificationToken();
     try {
-      const hash = await argon.hash(dto.password);
+      const hash: string = await argon.hash(dto.password);
 
       transaction = await this.prisma.$transaction([
         this.prisma.user.create({

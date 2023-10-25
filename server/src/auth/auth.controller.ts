@@ -28,14 +28,16 @@ import {
   SignupAdminResponse,
   SignupResponse,
 } from './api_response';
+
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
+  // TODO consider using repository pattern
 
   @Post('signup')
   @ApiResponse({
     status: 201,
-    description: 'User sign up successfull',
+    description: 'User sign up successfully',
     type: SignupResponse,
   })
   signup(
@@ -47,7 +49,7 @@ export class AuthController {
   @Post('signup/admin')
   @ApiResponse({
     status: 201,
-    description: 'User sign up successfull',
+    description: 'User sign up successfully',
     type: SignupAdminResponse,
   })
   async signupAdmin(
